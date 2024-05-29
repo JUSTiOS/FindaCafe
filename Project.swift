@@ -8,6 +8,7 @@ let project = Project(
             destinations: .iOS,
             product: .app,
             bundleId: "io.juistios.FindaCafe",
+            deploymentTargets: .iOS("15.0"),
             infoPlist: .extendingDefault(
                 with: [
                     "UILaunchStoryboardName": "LaunchScreen.storyboard",
@@ -25,6 +26,7 @@ let project = Project(
             destinations: .iOS,
             product: .unitTests,
             bundleId: "io.juistios.FindaCafeTests",
+            deploymentTargets: .iOS("15.0"),
             infoPlist: .default,
             sources: ["FindaCafe/Tests/**"],
             resources: [],
