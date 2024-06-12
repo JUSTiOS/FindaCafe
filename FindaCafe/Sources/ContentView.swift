@@ -2,25 +2,32 @@ import SwiftUI
 import SearchFeature
 
 public struct ContentView: View {
-    public init() {}
-
+    @State private var selectedTab: Tab = .myCafe
     public var body: some View {
-        TabView {
-            Text("First").tabItem {
-                Image(systemName: "heart.text.square")
-                Text("내 카페")
+        ZStack {
+            VStack {
+                TabView(selection: $selectedTab){
+                    ForEach(Tab.allCases, id: \.rawValue) { tab in
+                        HStack {
+                            if tab == .searchCafe {
+                                SearchFeature.CafeMapView()
+                            } else {
+                                    VStack {
+                                    Image(systemName: tab.rawValue)
+                                    Text("")
+                                }
+                            }
+                        }
+                        .tag(tab)
+                    }
+                }
             }
-            SearchFeature.CafeMapView().tabItem {
-                Image(systemName: "magnifyingglass")
-                Text("카페 찾기")
-            }
-            Text("Third").tabItem {
-                Image(systemName: "info.circle")
-                Text("정보")
+            
+            VStack {
+                Spacer()
+                CustomTabbar(selectedTab: $selectedTab)
             }
         }
-        .background(Color.red)
-        .cornerRadius(30)
     }
 }
 
@@ -28,5 +35,6 @@ public struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+            .ignoresSafeArea()
     }
 }

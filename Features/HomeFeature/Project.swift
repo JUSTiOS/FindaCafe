@@ -8,7 +8,7 @@ let project = Project(
             destinations: .iOS,
             product: .framework,
             bundleId: "io.justios.HomeFeature",
-            deploymentTargets: .iOS("15.0"),
+            deploymentTargets: .iOS("16.0"),
             sources: ["Sources/**"],
             dependencies: []
         )

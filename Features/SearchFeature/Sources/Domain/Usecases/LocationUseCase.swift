@@ -1,0 +1,4 @@
+import Combine
+
+struct LocationUseCase {
+}
