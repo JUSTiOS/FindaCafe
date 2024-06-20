@@ -10,7 +10,7 @@ let project = Project(
             bundleId: "io.justios.SearchFeature",
             deploymentTargets: .iOS("16.0"),
             sources: ["Sources/**"],
-            dependencies: [.external(name: "Alamofire")]
+            dependencies: []
         )
     ]
 )

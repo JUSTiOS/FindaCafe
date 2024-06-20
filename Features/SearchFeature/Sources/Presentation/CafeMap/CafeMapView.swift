@@ -4,18 +4,21 @@ import Combine
 
 public struct CafeMapView: View {
     @State var draw: Bool = false
+    @ObservedObject var viewModel: CafeMapViewModel
+    
     @State private var searchText: String = ""
     @FocusState private var isFocused: Bool
-    @State var locationService = LocationSevice()
     
-    public init() {
-        SDKInitializer.InitSDK(appKey: "d8467343ae24e33349cee732be690103")
+    public init(viewModel: CafeMapViewModel) {
+        self.viewModel = viewModel
+        
+        SDKInitializer.InitSDK(appKey: "")
     }
     
     public var body: some View {
         ZStack(alignment: .top) {
             VStack{
-                KakaoMapView(draw: $draw).onAppear(perform: {
+                KakaoMapView(draw: draw, latitude: self.viewModel.myLocation.latitude, longitude: self.viewModel.myLocation.longitude).onAppear(perform: {
                     self.draw = true
                 }).onDisappear(perform: {
                     self.draw = false

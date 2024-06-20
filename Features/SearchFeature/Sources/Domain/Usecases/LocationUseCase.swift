@@ -1,4 +1,0 @@
-import Combine
-
-struct LocationUseCase {
-}

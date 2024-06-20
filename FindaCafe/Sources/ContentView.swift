@@ -3,6 +3,7 @@ import SearchFeature
 
 public struct ContentView: View {
     @State private var selectedTab: Tab = .myCafe
+    
     public var body: some View {
         ZStack {
             VStack {
@@ -10,7 +11,7 @@ public struct ContentView: View {
                     ForEach(Tab.allCases, id: \.rawValue) { tab in
                         HStack {
                             if tab == .searchCafe {
-                                SearchFeature.CafeMapView()
+                                SearchFeature.CafeMapView(viewModel: AppDI.shared.cafeMapDependencies())
                             } else {
                                     VStack {
                                     Image(systemName: tab.rawValue)

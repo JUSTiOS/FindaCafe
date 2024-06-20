@@ -8,7 +8,7 @@ import PackageDescription
         // Customize the product types for specific package product
         // Default is .staticFramework
         // productTypes: ["Alamofire": .framework,]
-        productTypes: ["Alamofire": .framework, "KakaoMapsSDK-SPM": .framework]
+        productTypes: ["Alamofire": .staticLibrary, "KakaoMapsSDK-SPM": .staticLibrary]
     )
 #endif
 

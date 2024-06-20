@@ -19,6 +19,7 @@ let project = Project(
             dependencies: [
                 .project(target: "HomeFeature", path: "Features/HomeFeature"),
                 .project(target: "SearchFeature", path: "Features/SearchFeature"),
+                .external(name: "Alamofire"),
                 .external(name: "KakaoMapsSDK-SPM")
             ]
         ),
