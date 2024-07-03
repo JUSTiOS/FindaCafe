@@ -1,12 +1,12 @@
-import Foundation
+import SwiftUI
 
-struct NearbyCafeEntity {
-    let cafeName: String
-    let distance: Double
-    let latitude: Double
-    let longitude: Double
+class NearbyCafeEntity: ObservableObject {
+    @Published var cafeName: String
+    @Published var distance: String
+    @Published var latitude: String
+    @Published var longitude: String
     
-    init(cafeName: String, distance: Double, latitude: Double, longitude: Double) {
+    init(cafeName: String, distance: String, latitude: String, longitude: String) {
         self.cafeName = cafeName
         self.distance = distance
         self.latitude = latitude

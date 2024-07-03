@@ -1,6 +1,6 @@
 import Combine
 
-class NowLocationRepository: NowLocationInterface {
+class MyLocationRepository: NowLocationInterface {
     private var nowLocationService: NowLocationSevice
     
     init(nowLocationService: NowLocationSevice) {

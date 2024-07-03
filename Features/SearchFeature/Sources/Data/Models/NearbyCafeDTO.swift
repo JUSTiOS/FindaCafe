@@ -39,13 +39,15 @@ struct Document: Decodable {
     var phone: String
     var addressName: String
     var roadAddressName: String
-    var x: String
-    var y: String
+    var longitude: String
+    var latitude: String
     var placeUrl: String
     var distance: String
     
     private enum CodingKeys: String, CodingKey {
-        case id, phone, x, y, distance
+        case id, phone, distance
+        case longitude = "x"
+        case latitude = "y"
         case placeName = "place_name"
         case categoryName = "category_name"
         case categoryGroupCode = "catetory_group_code"
@@ -53,5 +55,14 @@ struct Document: Decodable {
         case addressName = "address_name"
         case roadAddressName = "road_address_name"
         case placeUrl = "place_url"
+    }
+}
+
+extension Document {
+    func toDomain() -> NearbyCafeEntity {
+        return .init(cafeName: placeName,
+                     distance: distance,
+                     latitude: latitude,
+                     longitude: longitude)
     }
 }

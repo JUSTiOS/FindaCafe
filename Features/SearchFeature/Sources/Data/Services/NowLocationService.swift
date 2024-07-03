@@ -1,8 +1,9 @@
 import CoreLocation
 import Combine
+import SwiftUI
 
 class NowLocationSevice: NSObject, CLLocationManagerDelegate, ObservableObject {
-    private var nowLocation: NowLocationModel = NowLocationModel()
+    @ObservedObject private var nowLocation: MyLocationDTO = MyLocationDTO()
     
     private let manager = CLLocationManager()
     
@@ -26,8 +27,11 @@ class NowLocationSevice: NSObject, CLLocationManagerDelegate, ObservableObject {
     }
     
     func getNowLocation() -> AnyPublisher<MyLocationEntity, Never> {
-        print("2")
-        return Just(nowLocation.getLocation())
+        return nowLocation.$latitude
+            .combineLatest(nowLocation.$longitude)
+            .map { latitude, longitude in
+                MyLocationEntity(latitude: latitude, longitude: longitude)
+            }
             .eraseToAnyPublisher()
     }
     
@@ -35,7 +39,6 @@ class NowLocationSevice: NSObject, CLLocationManagerDelegate, ObservableObject {
         guard let location = locations.first else {
             return
         }
-        print("1")
         nowLocation.setLocation(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
     }
 }

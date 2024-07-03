@@ -1,6 +1,8 @@
-struct MyLocationEntity {
-    let latitude: Double
-    let longitude: Double
+import SwiftUI
+
+class MyLocationEntity: ObservableObject {
+    @Published var latitude: Double
+    @Published var longitude: Double
     
     init(latitude: Double, longitude: Double) {
         self.latitude = latitude

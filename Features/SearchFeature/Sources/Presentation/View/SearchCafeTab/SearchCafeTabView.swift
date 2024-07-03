@@ -4,13 +4,11 @@ import Combine
 
 public struct SearchCafeTabView: View {
     @ObservedObject var viewModel: SearchCafeTabViewModel
-    @ObservedObject var location: MyLocationEntity
     @FocusState private var isFocused: Bool
     @State var coordinator: KakaoMapCoordinator = KakaoMapCoordinator()
     
     public init(viewModel: SearchCafeTabViewModel) {
         self.viewModel = viewModel
-        self.location = viewModel.myLocation
         SDKInitializer.InitSDK(appKey: "")
     }
     
@@ -19,7 +17,7 @@ public struct SearchCafeTabView: View {
             VStack{
                 if viewModel.myLocation.longitude != 0.0 {
                     KakaoMapView(coordinator: $coordinator, draw: viewModel.draw)
-                        .environmentObject(location)
+                        .environmentObject(viewModel.myLocation)
                         .onAppear {
                             viewModel.draw = true
                         }.onDisappear {
@@ -58,8 +56,6 @@ public struct SearchCafeTabView: View {
             .background(isFocused ? .white : .clear)
             .onAppear {
                 viewModel.getMyLocation()
-                location.latitude = viewModel.myLocation.latitude
-                location.longitude = viewModel.myLocation.longitude
             }
         }
     }

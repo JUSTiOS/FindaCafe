@@ -1,3 +1,3 @@
 public protocol AppDIInterface {
-    func cafeMapDependencies() -> CafeMapViewModel
+    func searchCafeTabDependencies() -> SearchCafeTabViewModel
 }

@@ -1,8 +1,17 @@
+//import SwiftUI
+//import Combine
 //
-//  NearbyCafeRepository.swift
-//  SearchFeature
-//
-//  Created by Yejin Hong on 6/12/24.
-//
-
-import Foundation
+//class NearbyCafeRepository: NearbyCafeInterface {
+//    private var networkService: NetworkService
+//    
+//    init(networkService: NetworkService) {
+//        self.networkService = networkService
+//    }
+//    
+//    func getNearbyCafeList(url: String) -> AnyPublisher<NearbyCafeEntity, Error> {
+//        return networkService.downloadData(url: url)
+//    }
+//    
+//    func fetchNearbyCafe() -> AnyPublisher<NearbyCafeEntity, Error> {
+//    }
+//}

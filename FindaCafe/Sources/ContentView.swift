@@ -11,7 +11,7 @@ public struct ContentView: View {
                     ForEach(Tab.allCases, id: \.rawValue) { tab in
                         HStack {
                             if tab == .searchCafe {
-                                SearchFeature.CafeMapView(viewModel: AppDI.shared.cafeMapDependencies())
+                                SearchFeature.SearchCafeTabView(viewModel: AppDI.shared.searchCafeTabDependencies())
                             } else {
                                     VStack {
                                     Image(systemName: tab.rawValue)
