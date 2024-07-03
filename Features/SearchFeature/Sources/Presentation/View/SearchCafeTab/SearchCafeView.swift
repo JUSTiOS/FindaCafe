@@ -2,44 +2,45 @@ import SwiftUI
 import KakaoMapsSDK
 import Combine
 
-public struct CafeMapView: View {
-    @State var draw: Bool = false
-    @ObservedObject var viewModel: CafeMapViewModel
-    
-    @State private var searchText: String = ""
+public struct SearchCafeTabView: View {
+    @ObservedObject var viewModel: SearchCafeTabViewModel
+    @ObservedObject var location: MyLocationEntity
     @FocusState private var isFocused: Bool
+    @State var coordinator: KakaoMapCoordinator = KakaoMapCoordinator()
     
-    public init(viewModel: CafeMapViewModel) {
+    public init(viewModel: SearchCafeTabViewModel) {
         self.viewModel = viewModel
-        
+        self.location = viewModel.myLocation
         SDKInitializer.InitSDK(appKey: "")
     }
     
     public var body: some View {
         ZStack(alignment: .top) {
             VStack{
-                KakaoMapView(draw: draw, latitude: self.viewModel.myLocation.latitude, longitude: self.viewModel.myLocation.longitude).onAppear(perform: {
-                    self.draw = true
-                }).onDisappear(perform: {
-                    self.draw = false
-                })
-                .ignoresSafeArea(edges: .top)
+                if viewModel.myLocation.longitude != 0.0 {
+                    KakaoMapView(coordinator: $coordinator, draw: viewModel.draw)
+                        .environmentObject(location)
+                        .onAppear {
+                            viewModel.draw = true
+                        }.onDisappear {
+                            viewModel.draw = false
+                        }.ignoresSafeArea(edges: .top)
+                }
             }
             
             VStack {
-                Searchbar(searchText: $searchText)
+                Searchbar(searchText: viewModel.$searchText)
                     .focused($isFocused)
                     .autocorrectionDisabled(true)
                     .padding()
-                
                 if isFocused {
                     SearchCafe()
                 } else {
                     HStack {
                         Spacer()
-                        
                         Button {
-                            // 지도 현재위치로
+                            print("viewModel.draw = ", viewModel.draw)
+                            coordinator.moveCamera()
                         } label: {
                             Image(systemName: "dot.scope")
                                 .font(.system(size: 25))
@@ -52,10 +53,14 @@ public struct CafeMapView: View {
                         .padding(.trailing)
                         .shadow(radius: 3)
                     }}
-                
                 Spacer()
             }
             .background(isFocused ? .white : .clear)
+            .onAppear {
+                viewModel.getMyLocation()
+                location.latitude = viewModel.myLocation.latitude
+                location.longitude = viewModel.myLocation.longitude
+            }
         }
     }
 }

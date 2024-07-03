@@ -1,8 +1,8 @@
 import SwiftUI
 
 struct Searchbar: View {
-    @Binding var searchText: String
     @FocusState private var isFocused: Bool
+    @Binding var searchText: String
     
     var body: some View {
         HStack {
@@ -17,7 +17,6 @@ struct Searchbar: View {
                     }
                     .focused($isFocused)
                 }
-                
                 HStack {
                     if isFocused {
                         Spacer()
