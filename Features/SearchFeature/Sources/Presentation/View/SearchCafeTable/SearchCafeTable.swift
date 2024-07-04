@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct SearchCafe: View {
+struct SearchCafeTable: View {
     var body: some View {
         VStack {
             List {

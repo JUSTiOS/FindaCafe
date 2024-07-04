@@ -2,18 +2,38 @@ import SwiftUI
 import Combine
 
 class NetworkService: NSObject, ObservableObject {
-    func downloadData<T: Decodable>(url: String) -> AnyPublisher<T, Error> {
-        guard let url = URL(string: url) else {
+    func downloadData<T: Decodable>(url: String, longitude: String, latitude: String) -> AnyPublisher<T, Error> {
+        var components = URLComponents(string: url)
+        let category = URLQueryItem(name: "category_group_code",value: "CE7")
+        let longitude = URLQueryItem(name: "x", value: longitude)
+        let latitude = URLQueryItem(name: "y", value: latitude)
+        components?.queryItems = [category, longitude, latitude]
+        
+        guard let newURL = components?.url else {
             return Fail(error: URLError(.badURL)).eraseToAnyPublisher()
         }
         
-        var request = URLRequest(url: url)
+        guard let apiKey = Bundle.main.restAPIKey else {
+            return Fail(error: URLError(.unknown)).eraseToAnyPublisher()
+        }
+        
+        var request = URLRequest(url: newURL)
         request.httpMethod = "GET"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("KakaoAK \(apiKey)", forHTTPHeaderField: "Authorization")
         
         let session = URLSession.shared
         
-        return session.dataTaskPublisher(for: request)
-            .map(\.data)
+        return session
+            .dataTaskPublisher(for: request)
+            .tryMap { element -> Data in
+                guard let response = element.response as? HTTPURLResponse, response.statusCode >= 200 else {
+                    return Data()
+                }
+                
+                print("Data -> ", try? JSONDecoder().decode(NearbyCafeDTO.self, from: element.data))
+                return element.data
+            }
             .decode(type: T.self, decoder: JSONDecoder())
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()

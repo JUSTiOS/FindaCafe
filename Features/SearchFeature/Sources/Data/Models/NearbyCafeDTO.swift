@@ -6,10 +6,10 @@ struct NearbyCafeDTO: Decodable {
 }
 
 struct Meta: Decodable {
-    var totalCount: Int
-    var pageableCount: Int
-    var isEnd: Bool
-    var sameName: SameName
+    var totalCount: Int?
+    var pageableCount: Int?
+    var isEnd: Bool?
+    var sameName: SameName?
     
     private enum CodingKeys: String, CodingKey {
         case totalCount = "total_count"
@@ -20,9 +20,9 @@ struct Meta: Decodable {
 }
 
 struct SameName: Decodable {
-    var region: [String]
-    var keyword: String
-    var selectedRegion: String
+    var region: [String]?
+    var keyword: String?
+    var selectedRegion: String?
     
     private enum CodingKeys: String, CodingKey {
         case region, keyword
@@ -46,14 +46,14 @@ struct Document: Decodable {
     
     private enum CodingKeys: String, CodingKey {
         case id, phone, distance
-        case longitude = "x"
-        case latitude = "y"
         case placeName = "place_name"
         case categoryName = "category_name"
-        case categoryGroupCode = "catetory_group_code"
-        case categoryGroupName = "catetory_group_name"
+        case categoryGroupCode = "category_group_code"
+        case categoryGroupName = "category_group_name"
         case addressName = "address_name"
         case roadAddressName = "road_address_name"
+        case longitude = "x"
+        case latitude = "y"
         case placeUrl = "place_url"
     }
 }
@@ -63,6 +63,7 @@ extension Document {
         return .init(cafeName: placeName,
                      distance: distance,
                      latitude: latitude,
-                     longitude: longitude)
+                     longitude: longitude,
+                     categoryName: categoryName)
     }
 }

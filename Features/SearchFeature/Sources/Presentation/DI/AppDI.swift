@@ -2,10 +2,15 @@ public class AppDI: AppDIInterface {
     public static let shared = AppDI()
     
     public func searchCafeTabDependencies() -> SearchCafeTabViewModel {
-        let locationService = NowLocationSevice()
-        let repository = MyLocationRepository(nowLocationService: locationService)
-        let useCase = NowLocationUseCase(repository: repository)
-        let viewModel = SearchCafeTabViewModel(myLocationUseCase: useCase)
+        let myLocationService = NowLocationSevice()
+        let myLocationRepository = MyLocationRepository(nowLocationService: myLocationService)
+        let myLocationUsecase = NowLocationUseCase(repository: myLocationRepository)
+        
+        let networkService = NetworkService()
+        let nearbyCafeRepository = NearbyCafeRepository(networkService: networkService)
+        let nearbyCafeUsecase = NearbyCafeUsecase(repository: nearbyCafeRepository)
+        
+        let viewModel = SearchCafeTabViewModel(myLocationUseCase: myLocationUsecase, nearbyCafeUseCase: nearbyCafeUsecase)
         return viewModel
     }
 }

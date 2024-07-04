@@ -1,10 +1,10 @@
 import Combine
 
-protocol NowLocationUseCaseInterface {
+protocol NowLocationUseCaseProtocol {
     func execute() -> AnyPublisher<MyLocationEntity, Never>
 }
 
-final class NowLocationUseCase: NowLocationUseCaseInterface {
+final class NowLocationUseCase: NowLocationUseCaseProtocol {
     private let repository: NowLocationInterface
     
     init(repository: NowLocationInterface) {

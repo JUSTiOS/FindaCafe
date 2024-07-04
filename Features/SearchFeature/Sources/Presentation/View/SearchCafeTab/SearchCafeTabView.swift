@@ -9,14 +9,19 @@ public struct SearchCafeTabView: View {
     
     public init(viewModel: SearchCafeTabViewModel) {
         self.viewModel = viewModel
-        SDKInitializer.InitSDK(appKey: "")
+        
+        if let apiKey = Bundle.main.authAPIKey {
+            SDKInitializer.InitSDK(appKey: apiKey)
+        } else {
+            //alert
+        }
     }
     
     public var body: some View {
         ZStack(alignment: .top) {
             VStack{
-                if viewModel.myLocation.longitude != 0.0 {
-                    KakaoMapView(coordinator: $coordinator, draw: viewModel.draw)
+                if viewModel.update {
+                    KakaoMapView(coordinator: $coordinator, location: viewModel.myLocation, nearbyCafes: viewModel.nearbyCafes, draw: viewModel.draw)
                         .environmentObject(viewModel.myLocation)
                         .onAppear {
                             viewModel.draw = true
@@ -32,12 +37,11 @@ public struct SearchCafeTabView: View {
                     .autocorrectionDisabled(true)
                     .padding()
                 if isFocused {
-                    SearchCafe()
+                    SearchCafeTable()
                 } else {
                     HStack {
                         Spacer()
                         Button {
-                            print("viewModel.draw = ", viewModel.draw)
                             coordinator.moveCamera()
                         } label: {
                             Image(systemName: "dot.scope")
@@ -56,6 +60,7 @@ public struct SearchCafeTabView: View {
             .background(isFocused ? .white : .clear)
             .onAppear {
                 viewModel.getMyLocation()
+                viewModel.getNearbyCafeList()
             }
         }
     }
