@@ -64,6 +64,7 @@ extension Document {
                      distance: distance,
                      latitude: latitude,
                      longitude: longitude,
-                     categoryName: categoryName)
+                     categoryName: categoryName,
+                     address: addressName)
     }
 }

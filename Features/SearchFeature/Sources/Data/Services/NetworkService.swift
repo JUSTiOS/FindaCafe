@@ -30,8 +30,6 @@ class NetworkService: NSObject, ObservableObject {
                 guard let response = element.response as? HTTPURLResponse, response.statusCode >= 200 else {
                     return Data()
                 }
-                
-                print("Data -> ", try? JSONDecoder().decode(NearbyCafeDTO.self, from: element.data))
                 return element.data
             }
             .decode(type: T.self, decoder: JSONDecoder())

@@ -73,7 +73,7 @@ class KakaoMapCoordinator: NSObject, MapControllerDelegate, ObservableObject {
         let iconStyle = PoiIconStyle(symbol: image, anchorPoint: CGPoint(x: 0.5, y: 0.5))
         let text = PoiTextLineStyle(textStyle: TextStyle(fontSize: 25, fontColor: UIColor.systemRed, strokeThickness: 5, strokeColor: .white))
         let textStyle = PoiTextStyle(textLineStyles: [text])
-        textStyle.textLayouts = [PoiTextLayout.bottom, PoiTextLayout.center] // 이 스타일이 적용되기 시작할 레벨.
+        textStyle.textLayouts = [PoiTextLayout.bottom]
         let poiStyle = PoiStyle(styleID: "myLocationPoiStyle", styles: [
             PerLevelPoiStyle(iconStyle: iconStyle, textStyle: textStyle, level: 0)
         ])
@@ -87,7 +87,7 @@ class KakaoMapCoordinator: NSObject, MapControllerDelegate, ObservableObject {
         let iconStyle = PoiIconStyle(symbol: image, anchorPoint: CGPoint(x: 0.5, y: 0.5))
         let text = PoiTextLineStyle(textStyle: TextStyle(fontSize: 25, fontColor: UIColor.orange, strokeThickness: 5, strokeColor: .white))
         let textStyle = PoiTextStyle(textLineStyles: [text])
-        textStyle.textLayouts = [PoiTextLayout.bottom, PoiTextLayout.center] // 이 스타일이 적용되기 시작할 레벨.
+        textStyle.textLayouts = [PoiTextLayout.bottom]
         let poiStyle = PoiStyle(styleID: "nearbyCafePoiStyle", styles: [
             PerLevelPoiStyle(iconStyle: iconStyle, textStyle: textStyle, level: 0)
         ])
@@ -97,10 +97,10 @@ class KakaoMapCoordinator: NSObject, MapControllerDelegate, ObservableObject {
     func createMyLocationPois() {
         let view = controller?.getView("mapview") as! KakaoMap
         let manager = view.getLabelManager()
-        let layer = manager.getLabelLayer(layerID: "PoiLayer")   // 생성한 POI를 추가할 레이어를 가져온다.
-        let poiOption = PoiOptions(styleID: "myLocationPoiStyle") // 생성할 POI의 Option을 지정하기 위한 자료를 담는 클래스를 생성. 사용할 스타일의 ID를 지정한다.
+        let layer = manager.getLabelLayer(layerID: "PoiLayer")
+        let poiOption = PoiOptions(styleID: "myLocationPoiStyle")
         poiOption.rank = 0
-        poiOption.clickable = true // clickable 옵션을 true로 설정한다. default는 false로 설정되어있다.
+        poiOption.clickable = true
         poiOption.addText(PoiText(text: "현위치", styleIndex: 0))
         
         let poi1 = layer?.addPoi(option: poiOption, at: MapPoint(longitude: myLocation.longitude, latitude: myLocation.latitude), callback: {(_ poi: (Poi?)) -> Void in

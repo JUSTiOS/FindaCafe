@@ -3,12 +3,14 @@ import KakaoMapsSDK
 import Combine
 
 public struct SearchCafeTabView: View {
-    @ObservedObject var viewModel: SearchCafeTabViewModel
+    @ObservedObject var searchCafeTabViewModel: SearchCafeTabViewModel
+    @ObservedObject var searchCafeTableViewModel: SearchCafeTableViewModel
     @FocusState private var isFocused: Bool
     @State var coordinator: KakaoMapCoordinator = KakaoMapCoordinator()
     
-    public init(viewModel: SearchCafeTabViewModel) {
-        self.viewModel = viewModel
+    public init(searchCafeTabViewModel: SearchCafeTabViewModel, searchCafeTableViewModel: SearchCafeTableViewModel) {
+        self.searchCafeTabViewModel = searchCafeTabViewModel
+        self.searchCafeTableViewModel = searchCafeTableViewModel
         
         if let apiKey = Bundle.main.authAPIKey {
             SDKInitializer.InitSDK(appKey: apiKey)
@@ -20,24 +22,24 @@ public struct SearchCafeTabView: View {
     public var body: some View {
         ZStack(alignment: .top) {
             VStack{
-                if viewModel.update {
-                    KakaoMapView(coordinator: $coordinator, location: viewModel.myLocation, nearbyCafes: viewModel.nearbyCafes, draw: viewModel.draw)
-                        .environmentObject(viewModel.myLocation)
+                if searchCafeTabViewModel.update {
+                    KakaoMapView(coordinator: $coordinator, location: searchCafeTabViewModel.myLocation, nearbyCafes: searchCafeTabViewModel.nearbyCafes, draw: searchCafeTabViewModel.draw)
+                        .environmentObject(searchCafeTabViewModel.myLocation)
                         .onAppear {
-                            viewModel.draw = true
+                            searchCafeTabViewModel.draw = true
                         }.onDisappear {
-                            viewModel.draw = false
+                            searchCafeTabViewModel.draw = false
                         }.ignoresSafeArea(edges: .top)
                 }
             }
             
             VStack {
-                Searchbar(searchText: viewModel.$searchText)
+                Searchbar(searchText: searchCafeTabViewModel.$searchText)
                     .focused($isFocused)
                     .autocorrectionDisabled(true)
                     .padding()
                 if isFocused {
-                    SearchCafeTable()
+                    SearchCafeTable(viewModel: searchCafeTableViewModel, myLocation: searchCafeTabViewModel.myLocation)
                 } else {
                     HStack {
                         Spacer()
@@ -59,8 +61,8 @@ public struct SearchCafeTabView: View {
             }
             .background(isFocused ? .white : .clear)
             .onAppear {
-                viewModel.getMyLocation()
-                viewModel.getNearbyCafeList()
+                searchCafeTabViewModel.getMyLocation()
+                searchCafeTabViewModel.getNearbyCafeList()
             }
         }
     }

@@ -47,7 +47,6 @@ public final class SearchCafeTabViewModel: ObservableObject {
                     self.nearbyCafes = []
                 }
             } receiveValue: { nearbyCafes in
-                print("주변 카페 목록 >>>> ", nearbyCafes)
                 self.nearbyCafes = nearbyCafes
                 self.update = true
             }

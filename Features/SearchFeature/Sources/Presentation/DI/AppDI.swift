@@ -11,6 +11,17 @@ public class AppDI: AppDIInterface {
         let nearbyCafeUsecase = NearbyCafeUsecase(repository: nearbyCafeRepository)
         
         let viewModel = SearchCafeTabViewModel(myLocationUseCase: myLocationUsecase, nearbyCafeUseCase: nearbyCafeUsecase)
+        
+        return viewModel
+    }
+    
+    public func searchCafeTableDependencies() -> SearchCafeTableViewModel {
+        let networkService = NetworkService()
+        let nearbyCafeRepository = NearbyCafeRepository(networkService: networkService)
+        let nearbyCafeUsecase = NearbyCafeUsecase(repository: nearbyCafeRepository)
+        
+        let viewModel = SearchCafeTableViewModel(nearbyCafeUsecase: nearbyCafeUsecase)
+        
         return viewModel
     }
 }
