@@ -8,7 +8,9 @@ class NearbyCafeEntity: ObservableObject, Identifiable {
     @Published var categoryName: String
     @Published var address: String
     
-    init(cafeName: String, distance: String, latitude: String, longitude: String, categoryName: String, address: String) {
+    init(cafeName: String, distance: String,
+         latitude: String, longitude: String,
+         categoryName: String, address: String) {
         self.cafeName = cafeName
         self.distance = distance
         self.latitude = latitude

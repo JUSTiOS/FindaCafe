@@ -6,13 +6,13 @@ public final class SearchCafeTabViewModel: ObservableObject {
     private let nearbyCafeUsecase: NearbyCafeUsecaseProtocol
     private var cancellable: Set<AnyCancellable> = Set<AnyCancellable>()
     
-    @Published var myLocation: MyLocationEntity = MyLocationEntity(latitude: 0.0, longitude: 0.0)
-    @Published var nearbyCafes: [NearbyCafeEntity] = []
+    var myLocation: MyLocationEntity = MyLocationEntity(latitude: 0.0, longitude: 0.0)
+    var nearbyCafes: [NearbyCafeEntity] = []
+    
     @Published var draw: Bool = false
     @Published var locationUpdated: Bool = false
+    @Published var downloadFinish: Bool = false
     @State var searchText: String = ""
-    
-    @Published var update: Bool = false
     
     private var nearbyCafeURL = "https://dapi.kakao.com/v2/local/search/category.json"
     
@@ -38,7 +38,7 @@ public final class SearchCafeTabViewModel: ObservableObject {
     }
     
     func getNearbyCafeList() {
-        nearbyCafeUsecase.execute(url: nearbyCafeURL, standard: myLocation)
+        nearbyCafeUsecase.execute(url: nearbyCafeURL, page: "1", standard: myLocation)
             .sink { completion in
                 switch completion {
                 case .finished:
@@ -47,8 +47,8 @@ public final class SearchCafeTabViewModel: ObservableObject {
                     self.nearbyCafes = []
                 }
             } receiveValue: { nearbyCafes in
-                self.nearbyCafes = nearbyCafes
-                self.update = true
+                nearbyCafes.forEach { cafes in self.nearbyCafes.append(cafes)}
+                self.downloadFinish = true
             }
             .store(in: &cancellable)
     }

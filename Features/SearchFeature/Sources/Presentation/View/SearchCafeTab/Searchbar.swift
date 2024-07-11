@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct Searchbar: View {
-    @FocusState private var isFocused: Bool
+    @FocusState private var searchbarFocused: Bool
     @Binding var searchText: String
     
     var body: some View {
@@ -15,13 +15,13 @@ struct Searchbar: View {
                     TextField("내 주변 카페 검색", text: $searchText) {
                         
                     }
-                    .focused($isFocused)
+                    .focused($searchbarFocused)
                 }
                 HStack {
-                    if isFocused {
+                    if searchbarFocused {
                         Spacer()
                         Button {
-                            isFocused.toggle()
+                            searchbarFocused.toggle()
                         } label: {
                             Image(systemName: "xmark.circle.fill")
                                 .foregroundColor(.gray)

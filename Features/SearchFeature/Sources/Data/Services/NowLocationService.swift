@@ -3,7 +3,7 @@ import Combine
 import SwiftUI
 
 class NowLocationSevice: NSObject, CLLocationManagerDelegate, ObservableObject {
-    @ObservedObject private var nowLocation: MyLocationDTO = MyLocationDTO()
+    @ObservedObject private var nowLocation: MyLocationDTO = MyLocationDTO(latitude: 0.0, longitude: 0.0)
     
     private let manager = CLLocationManager()
     
@@ -17,20 +17,18 @@ class NowLocationSevice: NSObject, CLLocationManagerDelegate, ObservableObject {
         switch manager.authorizationStatus {
         case .notDetermined:
             manager.requestWhenInUseAuthorization()
-        case .restricted, .denied:
-            break
         case .authorizedAlways, .authorizedWhenInUse:
             manager.startUpdatingLocation()
         default:
-            manager.requestWhenInUseAuthorization()
+            print("권한 허용이 필요합니다. 설정에서 권한 설정을 해주세요.")
         }
     }
     
-    func getNowLocation() -> AnyPublisher<MyLocationEntity, Never> {
+    func getNowLocation() -> AnyPublisher<MyLocationDTO, Never> {
         return nowLocation.$latitude
             .combineLatest(nowLocation.$longitude)
             .map { latitude, longitude in
-                MyLocationEntity(latitude: latitude, longitude: longitude)
+                MyLocationDTO(latitude: latitude, longitude: longitude)
             }
             .eraseToAnyPublisher()
     }
@@ -40,5 +38,16 @@ class NowLocationSevice: NSObject, CLLocationManagerDelegate, ObservableObject {
             return
         }
         nowLocation.setLocation(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        switch status {
+        case .notDetermined, .restricted, .denied:
+            print("권한 허용이 필요합니다")
+        default:
+            manager.startUpdatingLocation()
+            nowLocation = MyLocationDTO(latitude: CLLocation().coordinate.latitude, longitude: CLLocation().coordinate.longitude)
+        }
+        
     }
 }

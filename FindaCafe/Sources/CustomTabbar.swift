@@ -67,14 +67,13 @@ struct CustomTabbar: View {
             Spacer()
         }
         .padding(.top)
-        .padding(.bottom)
+        .padding(.bottom, 50)
         .background(.white)
         .clipShape(
-            .rect(
-                topLeadingRadius: 25,
-                bottomLeadingRadius: 0,
-                bottomTrailingRadius: 0,
-                topTrailingRadius: 25)
+            .rect(topLeadingRadius: 25,
+                  bottomLeadingRadius: 0,
+                  bottomTrailingRadius: 0,
+                  topTrailingRadius: 25)
         )
         .shadow(radius: 5)
         .mask(Rectangle().padding(.top, -10))

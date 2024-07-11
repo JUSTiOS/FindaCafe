@@ -2,12 +2,14 @@ import SwiftUI
 import Combine
 
 class NetworkService: NSObject, ObservableObject {
-    func downloadData<T: Decodable>(url: String, longitude: String, latitude: String) -> AnyPublisher<T, Error> {
+    func downloadData<T: Decodable>(url: String, longitude: String, latitude: String, page: String) -> AnyPublisher<T, Error> {
         var components = URLComponents(string: url)
-        let category = URLQueryItem(name: "category_group_code",value: "CE7")
+        let category = URLQueryItem(name: "category_group_code", value: "CE7")
         let longitude = URLQueryItem(name: "x", value: longitude)
         let latitude = URLQueryItem(name: "y", value: latitude)
-        components?.queryItems = [category, longitude, latitude]
+        let radius = URLQueryItem(name: "radius", value: "500")
+        let page = URLQueryItem(name: "page", value: page)
+        components?.queryItems = [category, longitude, latitude, radius, page]
         
         guard let newURL = components?.url else {
             return Fail(error: URLError(.badURL)).eraseToAnyPublisher()

@@ -2,6 +2,9 @@ import SwiftUI
 
 struct SearchCafeTable: View {
     @ObservedObject var viewModel: SearchCafeTableViewModel
+    @Binding var coordinator: KakaoMapCoordinator
+    @FocusState var isFocused: Bool
+    @Binding var cafeSelected: Bool
     
     var myLocation: MyLocationEntity
     
@@ -11,8 +14,13 @@ struct SearchCafeTable: View {
                 if viewModel.update {
                     ForEach(viewModel.nearbyCafes, id: \.id) { cafe in
                         SearchCafeTableCell(nearbyCafe: cafe)
+                            .onTapGesture {
+                                coordinator.selectedCafe = cafe
+                                viewModel.selectedCafe = cafe
+                                cafeSelected = true
+                                isFocused.toggle()
+                            }
                     }
-                    .listStyle(.plain)
                 }
             }
             .listStyle(.plain)
@@ -39,6 +47,7 @@ struct SearchCafeTableCell: View {
             Text("\(nearbyCafe.distance) m")
                 .font(.system(size: 16))
                 .foregroundStyle(.orange)
-        }.frame(height: 40)
+        }
+        .frame(height: 40)
     }
 }

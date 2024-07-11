@@ -4,16 +4,17 @@ import KakaoMapsSDK
 class KakaoMapCoordinator: NSObject, MapControllerDelegate, ObservableObject {
     var myLocation: MyLocationEntity
     var nearbyCafes: [NearbyCafeEntity]
+    var selectedCafe: NearbyCafeEntity
     
     override init() {
-        first = true
-        auth = false
         myLocation = MyLocationEntity(latitude: 0.0, longitude: 0.0)
+        selectedCafe = NearbyCafeEntity(cafeName: "", distance: "", latitude: "", longitude: "", categoryName: "", address: "")
         nearbyCafes = []
         super.init()
     }
     
     func viewInit(viewName: String) {
+        createSpriteGUI()
         createLabelLayer()
         createMyLocationPoiStyle()
         createMyLocationPois()
@@ -37,25 +38,22 @@ class KakaoMapCoordinator: NSObject, MapControllerDelegate, ObservableObject {
         controller?.addView(mapviewInfo)
     }
     
+    func createSpriteGUI() {
+        let view = controller?.getView("mapview") as! KakaoMap
+        
+        view.setLogoPosition(origin: GuiAlignment(vAlign: .bottom, hAlign: .right), position: CGPoint(x: 10.0, y: 60.0))
+        
+        view.setCompassPosition(origin: GuiAlignment(vAlign: .bottom, hAlign: .left), position: CGPoint(x: 10.0, y: 40.0))
+        view.showCompass()
+        
+        view.setScaleBarPosition(origin: GuiAlignment(vAlign: .bottom, hAlign: .right), position: CGPoint(x: 10.0, y: 40.0))
+        view.showScaleBar()
+    }
+    
     func addViewSucceeded(_ viewName: String, viewInfoName: String) {
         let view = controller?.getView("mapview")
         view?.viewRect = container!.bounds
         viewInit(viewName: viewName)
-    }
-    
-    func containerDidResized(_ size: CGSize) {
-        let mapView: KakaoMap? = controller?.getView("mapview") as? KakaoMap
-        mapView?.viewRect = CGRect(origin: CGPoint(x: 0.0, y: 0.0), size: size)
-        
-        if first {
-            let cameraUpdate: CameraUpdate = CameraUpdate.make(target: MapPoint(longitude: myLocation.longitude, latitude: myLocation.latitude), mapView: mapView!)
-            mapView?.moveCamera(cameraUpdate)
-            first = false
-        }
-    }
-    
-    func authenticationSucceeded() {
-        auth = true
     }
     
     func createLabelLayer() {
@@ -132,11 +130,21 @@ class KakaoMapCoordinator: NSObject, MapControllerDelegate, ObservableObject {
     func moveCamera() {
         let mapView = controller?.getView("mapview") as! KakaoMap
         let cameraUpdate: CameraUpdate = CameraUpdate.make(target: MapPoint(longitude: myLocation.longitude, latitude: myLocation.latitude), zoomLevel: 15, mapView: mapView)
-        mapView.animateCamera(cameraUpdate: cameraUpdate, options: CameraAnimationOptions(autoElevation: true, consecutive: false, durationInMillis: 300))
+        mapView.animateCamera(cameraUpdate: cameraUpdate, options: CameraAnimationOptions(autoElevation: false, consecutive: false, durationInMillis: 0))
+    }
+    
+    func containerDidResized(_ size: CGSize) {
+        let mapView: KakaoMap = controller?.getView("mapview") as! KakaoMap
+        mapView.viewRect = CGRect(origin: CGPoint(x: 0.0, y: 0.0), size: size)
+        
+        if let latitude = Double(selectedCafe.latitude) {
+            let longitude = Double(selectedCafe.longitude) ?? 0.0
+            let cameraUpdate: CameraUpdate = CameraUpdate.make(target: MapPoint(longitude: longitude, latitude: latitude), zoomLevel: 17, mapView: mapView)
+            mapView.animateCamera(cameraUpdate: cameraUpdate, options: CameraAnimationOptions(autoElevation: false, consecutive: false, durationInMillis: 0))
+        }
     }
     
     var controller: KMController?
     var container: KMViewContainer?
-    var first: Bool
-    var auth: Bool
+    @State var resize: Bool = false
 }

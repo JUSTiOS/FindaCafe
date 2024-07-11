@@ -9,5 +9,9 @@ class MyLocationRepository: NowLocationInterface {
     
     func getNowLocation() -> AnyPublisher<MyLocationEntity, Never> {
         return nowLocationService.getNowLocation()
+            .map { dto in
+                MyLocationEntity(latitude: dto.latitude, longitude: dto.longitude)
+            }
+            .eraseToAnyPublisher()
     }
 }

@@ -29,6 +29,7 @@ public struct ContentView: View {
                 CustomTabbar(selectedTab: $selectedTab)
             }
         }
+        .ignoresSafeArea()
     }
 }
 

@@ -2,8 +2,13 @@ import SwiftUI
 import Combine
 
 final class MyLocationDTO: ObservableObject {
-    @Published private(set) var latitude: Double = 37.402001
-    @Published private(set) var longitude: Double = 127.108678
+    @Published var latitude: Double
+    @Published var longitude: Double
+    
+    init(latitude: Double, longitude: Double) {
+        self.latitude = latitude
+        self.longitude = longitude
+    }
     
     func setLocation(latitude: Double, longitude: Double) {
         self.latitude = latitude

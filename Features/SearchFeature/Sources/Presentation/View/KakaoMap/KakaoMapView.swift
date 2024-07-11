@@ -3,10 +3,10 @@ import KakaoMapsSDK
 
 struct KakaoMapView: UIViewRepresentable {
     @Binding var coordinator: KakaoMapCoordinator
+    @Binding var draw: Bool
     
     var location: MyLocationEntity
     var nearbyCafes: [NearbyCafeEntity]
-    var draw: Bool
     
     func makeUIView(context: Self.Context) -> KMViewContainer {
         let view: KMViewContainer = KMViewContainer(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
