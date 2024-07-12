@@ -1,9 +1,10 @@
 import SwiftUI
 
 struct BottomSheetView: View {
+    var myLocation: MyLocationEntity
     var cafeEntity: NearbyCafeEntity
+    var coordinator: KakaoMapCoordinator
     
-    @Binding var coordinator: KakaoMapCoordinator
     @State private var bookMarkSelected: Bool = false
     
     var body: some View {

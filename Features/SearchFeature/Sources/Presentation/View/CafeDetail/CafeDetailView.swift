@@ -8,7 +8,7 @@ struct CafeDetailView: View {
         ScrollView {
             VStack(alignment: .leading) {
                 CafeDetailTitle(cafeEntity: cafeEntity)
-                CafeDetailMap()
+                CafeDetailMap(cafeEntity: cafeEntity)
                 CafeDetailTag()
             }
         }
@@ -57,6 +57,11 @@ struct CafeDetailTitle: View {
 }
 
 struct CafeDetailMap: View {
+    @State var draw: Bool = false
+    
+    var coordinator: KakaoMapCoordinator = KakaoMapCoordinator()
+    var cafeEntity: NearbyCafeEntity
+    
     var body: some View {
         HStack {
             Image(systemName: "map")
@@ -67,11 +72,18 @@ struct CafeDetailMap: View {
                 .fontWeight(.heavy)
         }
         .padding(.top)
-        Rectangle()
+        
+        KakaoMapView(coordinator: coordinator, draw: $draw, myLocation: nil, nearbyCafes: [cafeEntity])
             .frame(height: 200)
             .foregroundColor(.gray)
             .cornerRadius(15)
             .padding([.top, .bottom])
+            .onAppear {
+                draw = true
+            }.onDisappear {
+                draw = false
+            }
+            .allowsHitTesting(false)
         
         Divider()
     }
@@ -95,7 +107,7 @@ struct CafeDetailTag: View {
         TagSection(sectionTitle: "분위기", sectionItems: ["조용함", "적당함", "활기참", "소란스러움"])
         TagSection(sectionTitle: "매장 크기", sectionItems: ["작음", "적당함", "넓음"])
         TagSection(sectionTitle: "혼잡도", sectionItems: ["원활", "보통", "혼잡"])
-        TagSection(sectionTitle: "콘센트 유무", sectionItems: ["없음", "적음", "적당함", "적음"])
+        TagSection(sectionTitle: "콘센트 유무", sectionItems: ["없음", "적음", "적당함", "많음"])
         TagSection(sectionTitle: "화장실 유무", sectionItems: ["없음", "있음"])
         
         HStack {

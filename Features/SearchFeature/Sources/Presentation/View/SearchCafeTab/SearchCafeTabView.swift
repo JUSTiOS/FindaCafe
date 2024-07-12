@@ -6,7 +6,7 @@ public struct SearchCafeTabView: View {
     @ObservedObject private var searchCafeTabViewModel: SearchCafeTabViewModel
     @ObservedObject private var searchCafeTableViewModel: SearchCafeTableViewModel
     @FocusState private var searchbarFocused: Bool
-    @State private var coordinator: KakaoMapCoordinator = KakaoMapCoordinator()
+    private var coordinator: KakaoMapCoordinator = KakaoMapCoordinator()
     @State private var cafeSelected: Bool = false
     @State private var draw: Bool = false
     
@@ -26,7 +26,7 @@ public struct SearchCafeTabView: View {
             ZStack(alignment: .top) {
                 VStack{
                     if searchCafeTabViewModel.downloadFinish {
-                        KakaoMapView(coordinator: $coordinator, draw: $draw, location: searchCafeTabViewModel.myLocation, nearbyCafes: searchCafeTabViewModel.nearbyCafes)
+                        KakaoMapView(coordinator: coordinator, draw: $draw, myLocation: searchCafeTabViewModel.myLocation, nearbyCafes: searchCafeTabViewModel.nearbyCafes)
                             .environmentObject(searchCafeTabViewModel.myLocation)
                             .onTapGesture {
                                 cafeSelected = false
@@ -46,7 +46,7 @@ public struct SearchCafeTabView: View {
                         .padding()
                     
                     if searchbarFocused {
-                        SearchCafeTable(viewModel: searchCafeTableViewModel, coordinator: $coordinator, isFocused: _searchbarFocused, cafeSelected: $cafeSelected, myLocation: searchCafeTabViewModel.myLocation)
+                        SearchCafeTable(viewModel: searchCafeTableViewModel, coordinator: coordinator, isFocused: _searchbarFocused, cafeSelected: $cafeSelected, myLocation: searchCafeTabViewModel.myLocation)
                     } else {
                         HStack {
                             Spacer()
@@ -69,7 +69,7 @@ public struct SearchCafeTabView: View {
                             GeometryReader { geometry in
                                 VStack {
                                     Spacer()
-                                    BottomSheetView(cafeEntity: searchCafeTableViewModel.selectedCafe, coordinator: $coordinator)
+                                    BottomSheetView(myLocation: searchCafeTabViewModel.myLocation, cafeEntity: searchCafeTableViewModel.selectedCafe, coordinator: coordinator)
                                         .frame(height: geometry.size.height / 3)
                                         .background(Color.white)
                                         .cornerRadius(25)

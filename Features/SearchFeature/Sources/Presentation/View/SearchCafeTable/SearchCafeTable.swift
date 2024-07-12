@@ -2,7 +2,7 @@ import SwiftUI
 
 struct SearchCafeTable: View {
     @ObservedObject var viewModel: SearchCafeTableViewModel
-    @Binding var coordinator: KakaoMapCoordinator
+    var coordinator: KakaoMapCoordinator
     @FocusState var isFocused: Bool
     @Binding var cafeSelected: Bool
     

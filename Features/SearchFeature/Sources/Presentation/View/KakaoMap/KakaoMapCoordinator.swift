@@ -2,12 +2,11 @@ import SwiftUI
 import KakaoMapsSDK
 
 class KakaoMapCoordinator: NSObject, MapControllerDelegate, ObservableObject {
-    var myLocation: MyLocationEntity
+    var myLocation: MyLocationEntity?
     var nearbyCafes: [NearbyCafeEntity]
     var selectedCafe: NearbyCafeEntity
     
     override init() {
-        myLocation = MyLocationEntity(latitude: 0.0, longitude: 0.0)
         selectedCafe = NearbyCafeEntity(cafeName: "-", phone: "-",
                                         distance: "-", latitude: "-",
                                         longitude: "-", categoryName: "-",
@@ -35,10 +34,15 @@ class KakaoMapCoordinator: NSObject, MapControllerDelegate, ObservableObject {
     }
     
     func addViews() {
-        let defaultPosition: MapPoint = MapPoint(longitude: myLocation.longitude, latitude: myLocation.latitude)
-        let mapviewInfo: MapviewInfo = MapviewInfo(viewName: "mapview", viewInfoName: "map", defaultPosition: defaultPosition, defaultLevel: 15)
-        
-        controller?.addView(mapviewInfo)
+        if let centerOfMap = myLocation {
+            let defaultPosition: MapPoint = MapPoint(longitude: centerOfMap.longitude, latitude: centerOfMap.latitude)
+            let mapviewInfo: MapviewInfo = MapviewInfo(viewName: "mapview", viewInfoName: "map", defaultPosition: defaultPosition, defaultLevel: 15)
+            controller?.addView(mapviewInfo)
+        } else {
+            let defaultPosition: MapPoint = MapPoint(longitude: Double(nearbyCafes[0].longitude) ?? 0.0, latitude: Double(nearbyCafes[0].latitude) ?? 0.0)
+            let mapviewInfo: MapviewInfo = MapviewInfo(viewName: "mapview", viewInfoName: "map", defaultPosition: defaultPosition, defaultLevel: 17)
+            controller?.addView(mapviewInfo)
+        }
     }
     
     func createSpriteGUI() {
@@ -86,29 +90,31 @@ class KakaoMapCoordinator: NSObject, MapControllerDelegate, ObservableObject {
         let manager = view.getLabelManager()
         let image = UIImage(named: "cafepoi")
         let iconStyle = PoiIconStyle(symbol: image, anchorPoint: CGPoint(x: 0.5, y: 0.5))
-//        let text = PoiTextLineStyle(textStyle: TextStyle(fontSize: 25, fontColor: UIColor.black, strokeThickness: 5, strokeColor: .white))
-//        let textStyle = PoiTextStyle(textLineStyles: [text])
-//        textStyle.textLayouts = [PoiTextLayout.bottom]
+        let text = PoiTextLineStyle(textStyle: TextStyle(fontSize: 25, fontColor: UIColor.black, strokeThickness: 2, strokeColor: .white))
+        let textStyle = PoiTextStyle(textLineStyles: [text])
+        textStyle.textLayouts = [PoiTextLayout.bottom]
         let poiStyle = PoiStyle(styleID: "nearbyCafePoiStyle", styles: [
-            PerLevelPoiStyle(iconStyle: iconStyle, level: 0)
+            PerLevelPoiStyle(iconStyle: iconStyle, textStyle: textStyle, level: 0)
         ])
         manager.addPoiStyle(poiStyle)
     }
     
     func createMyLocationPois() {
-        let view = controller?.getView("mapview") as! KakaoMap
-        let manager = view.getLabelManager()
-        let layer = manager.getLabelLayer(layerID: "PoiLayer")
-        let poiOption = PoiOptions(styleID: "myLocationPoiStyle")
-        poiOption.rank = 0
-        poiOption.clickable = true
-        poiOption.addText(PoiText(text: "현위치", styleIndex: 0))
-        
-        let poi1 = layer?.addPoi(option: poiOption, at: MapPoint(longitude: myLocation.longitude, latitude: myLocation.latitude), callback: {(_ poi: (Poi?)) -> Void in
-            print("")
+        if let myLocation = myLocation {
+            let view = controller?.getView("mapview") as! KakaoMap
+            let manager = view.getLabelManager()
+            let layer = manager.getLabelLayer(layerID: "PoiLayer")
+            let poiOption = PoiOptions(styleID: "myLocationPoiStyle")
+            poiOption.rank = 0
+            poiOption.clickable = true
+            poiOption.addText(PoiText(text: "현위치", styleIndex: 0))
+            
+            let poi1 = layer?.addPoi(option: poiOption, at: MapPoint(longitude: myLocation.longitude, latitude: myLocation.latitude), callback: {(_ poi: (Poi?)) -> Void in
+                print("")
+            }
+            )
+            poi1?.show()
         }
-        )
-        poi1?.show()
     }
     
     func createNearbyCafePois(nearbyCafe: NearbyCafeEntity) {
@@ -131,9 +137,11 @@ class KakaoMapCoordinator: NSObject, MapControllerDelegate, ObservableObject {
     }
     
     func moveCamera() {
-        let mapView = controller?.getView("mapview") as! KakaoMap
-        let cameraUpdate: CameraUpdate = CameraUpdate.make(target: MapPoint(longitude: myLocation.longitude, latitude: myLocation.latitude), zoomLevel: 15, mapView: mapView)
-        mapView.animateCamera(cameraUpdate: cameraUpdate, options: CameraAnimationOptions(autoElevation: false, consecutive: false, durationInMillis: 0))
+        if let myLocation = myLocation {
+            let mapView = controller?.getView("mapview") as! KakaoMap
+            let cameraUpdate: CameraUpdate = CameraUpdate.make(target: MapPoint(longitude: myLocation.longitude, latitude: myLocation.latitude), zoomLevel: 15, mapView: mapView)
+            mapView.animateCamera(cameraUpdate: cameraUpdate, options: CameraAnimationOptions(autoElevation: false, consecutive: false, durationInMillis: 0))
+        }
     }
     
     func containerDidResized(_ size: CGSize) {

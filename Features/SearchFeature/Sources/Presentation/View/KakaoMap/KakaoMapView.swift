@@ -2,10 +2,10 @@ import SwiftUI
 import KakaoMapsSDK
 
 struct KakaoMapView: UIViewRepresentable {
-    @Binding var coordinator: KakaoMapCoordinator
+    var coordinator: KakaoMapCoordinator
     @Binding var draw: Bool
     
-    var location: MyLocationEntity
+    var myLocation: MyLocationEntity?
     var nearbyCafes: [NearbyCafeEntity]
     
     func makeUIView(context: Self.Context) -> KMViewContainer {
@@ -32,7 +32,7 @@ struct KakaoMapView: UIViewRepresentable {
     }
     
     func makeCoordinator() -> KakaoMapCoordinator {
-        coordinator.myLocation = location
+        coordinator.myLocation = myLocation
         coordinator.nearbyCafes = nearbyCafes
         return coordinator
     }
