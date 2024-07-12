@@ -8,7 +8,10 @@ class KakaoMapCoordinator: NSObject, MapControllerDelegate, ObservableObject {
     
     override init() {
         myLocation = MyLocationEntity(latitude: 0.0, longitude: 0.0)
-        selectedCafe = NearbyCafeEntity(cafeName: "", distance: "", latitude: "", longitude: "", categoryName: "", address: "")
+        selectedCafe = NearbyCafeEntity(cafeName: "-", phone: "-",
+                                        distance: "-", latitude: "-",
+                                        longitude: "-", categoryName: "-",
+                                        address: "-")
         nearbyCafes = []
         super.init()
     }
@@ -83,11 +86,11 @@ class KakaoMapCoordinator: NSObject, MapControllerDelegate, ObservableObject {
         let manager = view.getLabelManager()
         let image = UIImage(named: "cafepoi")
         let iconStyle = PoiIconStyle(symbol: image, anchorPoint: CGPoint(x: 0.5, y: 0.5))
-        let text = PoiTextLineStyle(textStyle: TextStyle(fontSize: 25, fontColor: UIColor.orange, strokeThickness: 5, strokeColor: .white))
-        let textStyle = PoiTextStyle(textLineStyles: [text])
-        textStyle.textLayouts = [PoiTextLayout.bottom]
+//        let text = PoiTextLineStyle(textStyle: TextStyle(fontSize: 25, fontColor: UIColor.black, strokeThickness: 5, strokeColor: .white))
+//        let textStyle = PoiTextStyle(textLineStyles: [text])
+//        textStyle.textLayouts = [PoiTextLayout.bottom]
         let poiStyle = PoiStyle(styleID: "nearbyCafePoiStyle", styles: [
-            PerLevelPoiStyle(iconStyle: iconStyle, textStyle: textStyle, level: 0)
+            PerLevelPoiStyle(iconStyle: iconStyle, level: 0)
         ])
         manager.addPoiStyle(poiStyle)
     }

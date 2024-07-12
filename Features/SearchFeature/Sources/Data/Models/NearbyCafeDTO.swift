@@ -61,6 +61,7 @@ struct Document: Decodable {
 extension Document {
     func toDomain() -> NearbyCafeEntity {
         return .init(cafeName: placeName,
+                     phone: phone,
                      distance: distance,
                      latitude: latitude,
                      longitude: longitude,

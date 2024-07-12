@@ -18,7 +18,7 @@ struct BottomSheetView: View {
                 } label: {
                     Image(systemName: bookMarkSelected ? "star.fill" : "star")
                         .tint(.black)
-                        .font(.system(size: 25))
+                        .font(.system(size: 20))
                 }
             }
             .padding(.bottom, 4)
@@ -34,16 +34,16 @@ struct BottomSheetView: View {
                     .foregroundStyle(.gray)
                 Spacer()
                 NavigationLink {
-                    CafeDetailView()
+                    CafeDetailView(cafeEntity: cafeEntity)
                 } label: {
                     Text("태그 수정")
+                        .padding([.top, .bottom], 10)
+                        .padding([.leading, .trailing], 25)
+                        .font(.system(size: 14))
+                        .background(.black)
+                        .foregroundStyle(.white)
+                        .cornerRadius(15)
                 }
-                .padding([.top, .bottom], 10)
-                .padding([.leading, .trailing], 20)
-                .font(.system(size: 14))
-                .background(.black)
-                .foregroundStyle(.white)
-                .cornerRadius(15)
             }
         }
         .padding(.top, 30)

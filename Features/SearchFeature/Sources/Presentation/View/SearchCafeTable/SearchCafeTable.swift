@@ -46,7 +46,7 @@ struct SearchCafeTableCell: View {
             Spacer()
             Text("\(nearbyCafe.distance) m")
                 .font(.system(size: 16))
-                .foregroundStyle(.orange)
+                .foregroundStyle(.black)
         }
         .frame(height: 40)
     }

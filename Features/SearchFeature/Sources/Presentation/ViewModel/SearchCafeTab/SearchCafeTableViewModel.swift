@@ -14,7 +14,10 @@ public class SearchCafeTableViewModel: ObservableObject {
     
     init(nearbyCafeUsecase: NearbyCafeUsecaseProtocol) {
         self.nearbyCafeUsecase = nearbyCafeUsecase
-        self.selectedCafe = NearbyCafeEntity(cafeName: "", distance: "", latitude: "", longitude: "", categoryName: "", address: "")
+        self.selectedCafe = NearbyCafeEntity(cafeName: "-", phone: "-",
+                                             distance: "-", latitude: "-",
+                                             longitude: "-", categoryName: "-",
+                                             address: "-")
     }
     
     func getNearbyCafeList(myLocation: MyLocationEntity) {
