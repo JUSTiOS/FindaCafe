@@ -19,7 +19,6 @@ let project = Project(
             dependencies: [
                 .project(target: "HomeFeature", path: .relativeToRoot("Features/HomeFeature")),
                 .project(target: "SearchFeature", path: .relativeToRoot("Features/SearchFeature")),
-                
             ]
         ),
         .target(
