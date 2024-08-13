@@ -8,17 +8,17 @@
 import SwiftUI
 import KakaoMapsSDK
 
-public struct MapView: UIViewRepresentable {    
+struct MapView: UIViewRepresentable {
     private let size: CGSize
-    private let position: MapPoint
+    private let cafe: Cafe
     
-    public init(size: CGSize, position: Coord) {
+    init(size: CGSize, cafe: Cafe) {
         self.size = size
-        self.position = MapPoint(longitude: position.longitude, latitude: position.latitude)
+        self.cafe = cafe
         SDKInitializer.InitSDK(appKey: "494ee3607df71d466a244c17cb4bd279")
     }
     
-    public func makeUIView(context: Self.Context) -> KMViewContainer {
+    func makeUIView(context: Self.Context) -> KMViewContainer {
         let view: KMViewContainer = KMViewContainer(frame: .init(origin: .zero, size: size))
         view.sizeToFit()
         context.coordinator.createController(view)
@@ -27,27 +27,29 @@ public struct MapView: UIViewRepresentable {
         return view
     }
 
-    public func updateUIView(_ uiView: KMViewContainer, context: Self.Context) {
+    func updateUIView(_ uiView: KMViewContainer, context: Self.Context) {
         context.coordinator.controller?.activateEngine()
     }
     
-    public func makeCoordinator() -> KakaoMapCoordinator {
-        return KakaoMapCoordinator(position: position)
+    func makeCoordinator() -> KakaoMapCoordinator {
+        return KakaoMapCoordinator(cafe: cafe)
     }
     
-    public static func dismantleUIView(_ uiView: KMViewContainer, coordinator: KakaoMapCoordinator) {
+    static func dismantleUIView(_ uiView: KMViewContainer, coordinator: KakaoMapCoordinator) {
         coordinator.controller?.pauseEngine()
         coordinator.controller?.resetEngine()
     }
     
-    public class KakaoMapCoordinator: NSObject, MapControllerDelegate {
+    class KakaoMapCoordinator: NSObject, MapControllerDelegate {
         var controller: KMController?
         private var first: Bool
-        private let position: MapPoint
+        private let cafeName: String
+        private let cafePosition: MapPoint
         
-        init(position: MapPoint) {
+        init(cafe: Cafe) {
             first = true
-            self.position = position
+            self.cafeName = cafe.name
+            self.cafePosition = MapPoint(longitude: cafe.coord.longitude, latitude: cafe.coord.latitude)
             super.init()
         }
         
@@ -56,13 +58,13 @@ public struct MapView: UIViewRepresentable {
             controller?.delegate = self
         }
         
-        public func addViews() {
-            let mapviewInfo: MapviewInfo = MapviewInfo(viewName: "mapview", viewInfoName: "map", defaultPosition: position)
+        func addViews() {
+            let mapviewInfo: MapviewInfo = MapviewInfo(viewName: "mapview", viewInfoName: "map", defaultPosition: cafePosition)
             
             controller?.addView(mapviewInfo)
         }
 
-        public func addViewSucceeded(_ viewName: String, viewInfoName: String) {
+        func addViewSucceeded(_ viewName: String, viewInfoName: String) {
             let view = controller?.getView(viewName) as! KakaoMap
             createLabelLayer(for: view)
             createPoiStyle(for: view)
@@ -73,7 +75,7 @@ public struct MapView: UIViewRepresentable {
             let labelManager = view.getLabelManager()
             let layerOption = LabelLayerOptions(
                 layerID: "PoiLayer",
-                competitionType: .none,
+                competitionType: .same,
                 competitionUnit: .symbolFirst,
                 orderType: .rank,
                 zOrder: 0
@@ -83,9 +85,11 @@ public struct MapView: UIViewRepresentable {
         
         private func createPoiStyle(for view: KakaoMap) {
             let labelManager = view.getLabelManager()
+            let iconStyle = PoiIconStyle(symbol: HomeFeatureAsset.cafepoi.image, anchorPoint: CGPoint(x: 0.5, y: 1))
+            let textStyle = TextStyle(fontSize: 25, fontColor: .black, strokeThickness: 2, strokeColor: .white)
+            let poiTextStyle = PoiTextStyle(textLineStyles: [PoiTextLineStyle(textStyle: textStyle)])
             
-            let iconStyle = PoiIconStyle(symbol: UIImage(systemName: "mappin"), anchorPoint: CGPoint(x: 0.5, y: 1))
-            let poiStyle = PoiStyle(styleID: "PerLevelPoiStyle", styles: [PerLevelPoiStyle(iconStyle: iconStyle)])
+            let poiStyle = PoiStyle(styleID: "PerLevelPoiStyle", styles: [PerLevelPoiStyle(iconStyle: iconStyle, textStyle: poiTextStyle)])
             
             labelManager.addPoiStyle(poiStyle)
         }
@@ -94,27 +98,20 @@ public struct MapView: UIViewRepresentable {
             let labelManager = view.getLabelManager()
             let layer = labelManager.getLabelLayer(layerID: "PoiLayer")
             let poiOption = PoiOptions(styleID: "PerLevelPoiStyle")
+            poiOption.rank = 0
+            poiOption.addText(PoiText(text: cafeName, styleIndex: 0))
             
-            let poi = layer?.addPoi(option: poiOption, at: position)
+            let poi = layer?.addPoi(option: poiOption, at: cafePosition)
             poi?.show()
         }
         
-        public func addViewFailed(_ viewName: String, viewInfoName: String) {
+        func addViewFailed(_ viewName: String, viewInfoName: String) {
             print("Failed")
         }
         
-        public func containerDidResized(_ size: CGSize) {
+        func containerDidResized(_ size: CGSize) {
             let mapView: KakaoMap? = controller?.getView("mapview") as? KakaoMap
             mapView?.viewRect = CGRect(origin: .zero, size: size)
-//            if first {
-//                let cameraUpdate: CameraUpdate = CameraUpdate.make(
-//                    target: MapPoint(longitude: position.longitude, latitude: position.latitude),
-//                    zoomLevel: 10,
-//                    mapView: mapView!
-//                )
-//                mapView?.moveCamera(cameraUpdate)
-//                first = false
-//            }
         }
     }
 }
