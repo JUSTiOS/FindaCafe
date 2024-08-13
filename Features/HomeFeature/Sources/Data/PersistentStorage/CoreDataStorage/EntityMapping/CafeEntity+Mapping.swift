@@ -30,15 +30,7 @@ extension CafeEntity {
             phone: phone,
             coord: Coord(longitude: longitude, latitude: latitude),
             placeURL: placeURL.absoluteString,
-            tags: tags
-                .map {
-                    ($0 as! TagEntity).toDomain()
-                }
-                .sorted {
-                    $0.category.rawValue == $1.category.rawValue ? $0.name < $1.name : $0.category.rawValue < $1.category.rawValue
-                    
-//                    $0.category.rawValue < $1.category.rawValue
-                }
+            tags: Set(_immutableCocoaSet: tags)
         )
     }
 }
