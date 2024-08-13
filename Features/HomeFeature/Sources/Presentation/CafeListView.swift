@@ -9,12 +9,12 @@ import SwiftUI
 import Combine
 import CoreLocation
 
-enum Filter {
-    case all
-    case near
-}
-
 public struct CafeListView: View {
+    enum Filter {
+        case all
+        case near
+    }
+    
     private let loadCafeListUseCase: LoadCafeListUseCase
     
     public init(loadCafeListUseCase: LoadCafeListUseCase) {
@@ -31,114 +31,101 @@ public struct CafeListView: View {
     
     public var body: some View {
         NavigationStack {
-            VStack {
-                ZStack {
-                    // TODO: - Should be replaced by FINDA Image
-                    Text("Butter Coffee")
-                        .font(.title3)
-                        .fontWeight(.bold)
-                        .foregroundStyle(.gray)
-                    
+            ZStack {
+                VStack(spacing: 0) {
                     ZStack {
-                        HStack {
-                            Spacer()
+                        // TODO: - Should be replaced by FINDA Image
+                        Text("Butter Coffee")
+                            .font(.title3)
+                            .fontWeight(.bold)
+                            .foregroundStyle(.gray)
+                        
+                        ZStack {
+                            HStack {
+                                Spacer()
+                                
+                                Button(action: {
+                                    showFilterSelector.toggle()
+                                }) {
+                                    Text(filter == .all ? "전체" : "내 주변")
+                                }
+                                .padding()
+                            }
+                        }
+                        .tint(.gray)
+                        
+                    }
+                    
+                    List($cafes, id: \.self) { cafe in
+                        ZStack {
+                            CafeListCellView(cafe: cafe)
+                            
+                            NavigationLink(destination: CafeDetailView(cafe: cafe)) {
+                                EmptyView()
+                            }
+                            .opacity(.zero)
+                        }
+                        .listRowSeparator(.hidden)
+                        .listRowBackground(Color.clear)
+                    }
+                    .listStyle(.plain)
+                    .refreshable {
+                        showFilterSelector = false
+                    }
+                }
+                
+                VStack {
+                    // TODO: - Should be replaced to cafe board image
+                    RoundedRectangle(cornerRadius: 15)
+                        .frame(width: 200, height: 200)
+                    
+                    Text("등록된 카페가 없습니다.\n나만의 카페를 등록해보세요!")
+                }
+                .opacity(cafes.isEmpty ? 1.0 : 0.0)
+                
+                VStack {
+                    HStack {
+                        Spacer()
+                        
+                        VStack(spacing: 0) {
+                            Button(action: {
+                                filter = .all
+                                showFilterSelector = false
+                            }) {
+                                Text("전체")
+                                    .padding()
+                            }
+                            
+                            Rectangle()
+                                .frame(maxWidth: 100, maxHeight: 1.5)
                             
                             Button(action: {
-                                showFilterSelector.toggle()
+                                filter = .near
+                                showFilterSelector = false
                             }) {
-                                Text(filter == .all ? "전체" : "내 주변")
+                                Text("내 주변")
+                                    .padding()
                             }
-                            .padding(.horizontal)
-                            .padding(.vertical, 12)
                         }
-                        
-                        HStack {
-                            Spacer()
-                            
-                            VStack {
-                                Button(action: {
-                                    filter = .all
-                                    showFilterSelector = false
-                                }) {
-                                    Text("전체")
-                                }
-                                .padding(.top)
-                                
-                                Divider()
-                                    .frame(maxWidth: 100)
-                                
-                                Button(action: {
-                                    filter = .near
-                                    showFilterSelector = false
-                                }) {
-                                    Text("내 주변")
-                                }
-                                .padding(.bottom)
-                            }
-                            .padding(.horizontal)
-                            .clipShape(.rect(cornerRadius: 15))
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 15)
-                                    .stroke(.gray, lineWidth: 1.5)
-                            )
-                        }
-                        .offset(y: 40)
-                        .opacity(showFilterSelector ? 1.0 : 0.0)
-                    }
-                    .tint(.gray)
-                    
-                }
-                .background(.brown)
-                
-                List(cafes, id: \.self) { cafe in
-                    ZStack {
-                        HStack {
-                            Rectangle()
-                                .foregroundStyle(.brown)
-                                .frame(width: 85, height: 85)
-                            
-                            VStack(alignment: .leading, spacing: 2) {
-                                Text(cafe.name)
-                                    .font(.system(size: 15))
-                                    .fontWeight(.bold)
-                                    .lineLimit(1)
-                                
-                                Text(cafe.address)
-                                    .font(.system(size: 10))
-                                    .fontWeight(.bold)
-                                    .foregroundStyle(.gray)
-                                    .lineLimit(1)
-                                    .padding(.bottom, 8)
-                                
-                                HStack {
-                                    ForEach(Array(cafe.tags), id: \.self) { tag in
-                                        TagView(tag: tag)
-                                    }
-                                }
-                            }
-                            .padding(.horizontal, 12)
-                            .padding(.vertical, 12)
-                            
-                            Spacer()
-                        }
-                        .clipShape(RoundedRectangle(cornerRadius: 15))
+                        .padding(.horizontal)
+                        .foregroundStyle(.gray)
+                        .clipShape(
+                            RoundedRectangle(cornerRadius: 15)
+                        )
                         .overlay(
                             RoundedRectangle(cornerRadius: 15)
                                 .stroke(.gray, lineWidth: 1.5)
                         )
-//                        .shadow(radius: 3, x: 3, y: 3)
-                        
-                        NavigationLink(destination: CafeDetailView(cafe: cafe)) {
-                            EmptyView()
-                        }
-                        .opacity(.zero)
+                        .background(
+                            RoundedRectangle(cornerRadius: 15)
+                                .fill(.white)
+                                .shadow(radius: 3, x: 3, y: 3)
+                        )
                     }
-                    .listRowSeparator(.hidden)
-                    .listRowBackground(Color.clear)
-                }
-                .listStyle(.plain)
-                .refreshable {
+                    .offset(x: -10, y: 45)
+                    .opacity(showFilterSelector ? 1.0 : 0.0)
                     
+                    Spacer()
                 }
             }
         }
@@ -151,30 +138,3 @@ public struct CafeListView: View {
         }
     }
 }
-
-struct TagView: View {
-    let tag: Tag
-    
-    var body: some View {
-        Text(tag.name)
-            .font(.system(size: 9))
-            .fontWeight(.bold)
-            .padding(.horizontal, 12)
-            .padding(.vertical, 4)
-            .overlay(
-                RoundedRectangle(cornerRadius: 10)
-                    .stroke(lineWidth: 2)
-            )
-    }
-}
-
-#Preview {
-    struct PreviewView: View {
-        var body: some View {
-            CafeListView(loadCafeListUseCase: LoadCafeListUseCaseImpl(repository: CafeRepositoryImpl(persistentStorage: CoreDataCafeStorage(coreDataStorage: CoreDataStorage(inMemory: true)))))
-        }
-    }
-    
-    return PreviewView()
-}
-
