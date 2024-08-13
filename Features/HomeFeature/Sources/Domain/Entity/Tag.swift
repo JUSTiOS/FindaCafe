@@ -8,7 +8,8 @@
 import Foundation
 
 public struct Tag: Hashable {
-    enum Category: String {
+    @objc enum Category: Int16 {
+        case custom
         case mood
         case cafeSize
         case congestion
@@ -17,9 +18,9 @@ public struct Tag: Hashable {
     }
     
     let name: String
-    let category: Category?
+    let category: Category
     
-    init(name: String, category: Category?) {
+    init(name: String, category: Category) {
         self.name = name
         self.category = category
     }

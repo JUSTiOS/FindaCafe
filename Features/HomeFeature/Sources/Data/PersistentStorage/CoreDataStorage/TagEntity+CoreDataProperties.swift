@@ -16,7 +16,7 @@ extension TagEntity {
         return NSFetchRequest<TagEntity>(entityName: "TagEntity")
     }
 
-    @NSManaged public var category: String?
+    @NSManaged public var category: Int16
     @NSManaged public var name: String
     @NSManaged public var cafes: NSSet
 

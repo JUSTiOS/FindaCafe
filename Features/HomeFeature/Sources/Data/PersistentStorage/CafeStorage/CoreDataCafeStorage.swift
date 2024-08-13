@@ -78,17 +78,9 @@ public final class CoreDataCafeStorage: CafeStorage {
     
     private func fetchEntity(tag: Tag, inContext: NSManagedObjectContext) throws -> TagEntity? {
         let request: NSFetchRequest<TagEntity> = TagEntity.fetchRequest()
-        
-        switch tag.category {
-        case .some(let tagCategory):
-            request.predicate = NSPredicate(format: "%K == %@ AND %K == %@",
-                                            #keyPath(TagEntity.category), tagCategory.rawValue,
-                                            #keyPath(TagEntity.name), tag.name)
-        case .none:
-            request.predicate = NSPredicate(format: "%K == NIL AND %K == %@",
-                                            #keyPath(TagEntity.category),
-                                            #keyPath(TagEntity.name), tag.name)
-        }
+        request.predicate = NSPredicate(format: "%K == %@ AND %K == %i",
+                                        #keyPath(TagEntity.name), tag.name,
+                                        #keyPath(TagEntity.category), tag.category.rawValue)
         
         let tagEntities = try inContext.fetch(request)
         
