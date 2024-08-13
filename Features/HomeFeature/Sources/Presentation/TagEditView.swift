@@ -8,14 +8,26 @@
 import SwiftUI
 
 struct TagEditView: View {
-//    @Binding var selectedTags: Set<Tag>
-    @State private var newCustomTagName: String = ""
+    @Binding var selectedTags: Set<Tag>
+    @State var moodTag: Tag?
+    @State var cafeSizeTag: Tag?
+    @State var congestionTag: Tag?
+    @State var powerOutletTag: Tag?
+    @State var toiletTag: Tag?
+    @State private var customTags: [Tag] = []
+    
+    @State private var customTagBuffer: String = ""
+    
+    init(selectedTags: Binding<Set<Tag>>) {
+        self._selectedTags = selectedTags
+    }
     
     var body: some View {
         VStack {
             Text("태그 수정")
                 .font(.system(size: 17))
                 .fontWeight(.bold)
+                .padding(.top)
             
             VStack(alignment: .leading, spacing: 8) {
                 Text("태그 설정")
@@ -23,10 +35,18 @@ struct TagEditView: View {
                     .fontWeight(.bold)
                     .padding(.bottom)
                 
-//                Text("설정된 태그")
-//                    .font(.system(size: 10))
-//                    .fontWeight(.semibold)
-//                    .foregroundStyle(.gray)
+                Text("설정된 태그")
+                    .font(.system(size: 10))
+                    .fontWeight(.semibold)
+                    .foregroundStyle(.gray)
+                
+                TagFlowLayout {
+                    ForEach(Array(selectedTags), id: \.self) { tag in
+                        TagView(tag: tag)
+                            .padding(.horizontal, 4)
+                            .padding(.vertical, 4)
+                    }
+                }
                 
                 Text("분위기")
                     .font(.system(size: 10))
@@ -93,7 +113,7 @@ struct TagEditView: View {
                     .foregroundStyle(.gray)
                 
                 HStack {
-                    TextField("태그를 입력해 주세요", text: $newCustomTagName)
+                    TextField("태그를 입력해 주세요", text: $customTagBuffer)
                         .padding(.horizontal, 24)
                         .padding(.vertical)
                         .clipShape(RoundedRectangle(cornerRadius: 15))
@@ -103,6 +123,8 @@ struct TagEditView: View {
                         )
                     
                     Button(action: {
+                        let tag = Tag(name: customTagBuffer, category: .custom)
+                        customTagBuffer = ""
                         
                     }) {
                         Text("입력")
@@ -116,27 +138,28 @@ struct TagEditView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 15))
                 }
                 .padding(.bottom, 8)
-                
-                Button(action: {
-                    
-                }) {
-                    Text("수정 완료")
-                        .font(.system(size: 15))
-                        .fontWeight(.bold)
-                        .padding(.horizontal, 24)
-                        .padding(.vertical)
-                        .frame(maxWidth: .infinity)
-                }
-                .foregroundStyle(.white)
-                .background(.black)
-                .clipShape(RoundedRectangle(cornerRadius: 15))
             }
             .padding()
+            
+            Button(action: {
+                
+            }) {
+                Text("수정 완료")
+                    .font(.system(size: 15))
+                    .fontWeight(.bold)
+                    .padding(.horizontal, 24)
+                    .padding(.vertical)
+                    .frame(maxWidth: .infinity)
+            }
+            .foregroundStyle(.white)
+            .background(
+                RoundedRectangle(cornerRadius: 15)
+                    .fill(.black)
+            )
+            .padding()
+            
+            Spacer()
         }
         .padding()
     }
 }
-
-//#Preview {
-//    TagEditView()
-//}
