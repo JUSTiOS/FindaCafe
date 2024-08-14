@@ -11,7 +11,7 @@ struct TagSection: View {
                 .font(.system(size: 14))
             HStack {
                 ForEach(sectionItems, id: \.self){ item in
-                    Tag(tagTitle: item)
+                    Tag(sectionTitle: sectionTitle, tagTitle: item)
                 }
             }
         }
@@ -22,6 +22,7 @@ struct TagSection: View {
 struct Tag: View {
     @State var selected: Bool = false
     
+    var sectionTitle: String = ""
     var tagTitle: String = ""
     
     var body: some View {
@@ -39,6 +40,11 @@ struct Tag: View {
             .padding(2)
             .onTapGesture {
                 selected.toggle()
+                if selected {
+                    print("key: \(sectionTitle), tag: \(tagTitle)")
+                } else {
+                    print("key: \(sectionTitle), tag: \(tagTitle)")
+                }
             }
     }
 }
