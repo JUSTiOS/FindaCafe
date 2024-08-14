@@ -1,8 +1,15 @@
-//
-//  CoreDataUsecase.swift
-//  SearchFeature
-//
-//  Created by Yejin Hong on 8/12/24.
-//
+protocol CoreDataUsecaseProtocol {
+    func execute() -> Result<CafeInfo, CoreDataError>
+}
 
-import Foundation
+final class CoreDataUsecase: CoreDataUsecaseProtocol {
+    private let repository: CoreDataInterface
+    
+    init(repository: CoreDataInterface) {
+        self.repository = repository
+    }
+    
+    func execute() -> Result<CafeInfo, CoreDataError> {
+        return repository.getCafeInfo()
+    }
+}
