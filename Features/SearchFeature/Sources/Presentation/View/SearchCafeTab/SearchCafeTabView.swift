@@ -1,14 +1,19 @@
 import SwiftUI
 import KakaoMapsSDK
 import Combine
+import CoreData
 
 public struct SearchCafeTabView: View {
+    private var coordinator: KakaoMapCoordinator = KakaoMapCoordinator()
+    
     @ObservedObject private var searchCafeTabViewModel: SearchCafeTabViewModel
     @ObservedObject private var searchCafeTableViewModel: SearchCafeTableViewModel
+    
     @FocusState private var searchbarFocused: Bool
-    private var coordinator: KakaoMapCoordinator = KakaoMapCoordinator()
     @State private var cafeSelected: Bool = false
     @State private var draw: Bool = false
+    
+    @State private var isPresented: Bool = false
     
     public init(searchCafeTabViewModel: SearchCafeTabViewModel, searchCafeTableViewModel: SearchCafeTableViewModel) {
         self.searchCafeTabViewModel = searchCafeTabViewModel
@@ -17,7 +22,7 @@ public struct SearchCafeTabView: View {
         if let apiKey = Bundle.main.authAPIKey {
             SDKInitializer.InitSDK(appKey: apiKey)
         } else {
-            //alert
+            
         }
     }
     
@@ -43,6 +48,7 @@ public struct SearchCafeTabView: View {
                     Searchbar(searchText: searchCafeTabViewModel.$searchText)
                         .focused($searchbarFocused)
                         .autocorrectionDisabled(true)
+                    
                         .padding()
                     
                     if searchbarFocused {
@@ -83,7 +89,6 @@ public struct SearchCafeTabView: View {
                             .shadow(radius: 3)
                             .transition(.move(edge: .bottom))
                         }
-                        
                     }
                     
                     Spacer()

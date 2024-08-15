@@ -9,7 +9,6 @@ public final class SearchCafeTabViewModel: ObservableObject {
     var myLocation: MyLocationEntity = MyLocationEntity(latitude: 0.0, longitude: 0.0)
     var nearbyCafes: [NearbyCafeEntity] = []
     
-    @Published var draw: Bool = false
     @Published var locationUpdated: Bool = false
     @Published var downloadFinish: Bool = false
     @State var searchText: String = ""
