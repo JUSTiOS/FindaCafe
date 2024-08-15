@@ -7,6 +7,7 @@
         <attribute name="storeSize" optional="YES" attributeType="String"/>
         <attribute name="toilet" optional="YES" attributeType="String"/>
         <attribute name="vibe" optional="YES" attributeType="String"/>
+        <relationship name="tagInfo" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TagInfo"/>
     </entity>
     <entity name="TagInfo" representedClassName="TagInfo" syncable="YES" codeGenerationType="class">
         <attribute name="address" optional="YES" attributeType="String"/>
@@ -16,6 +17,5 @@
         <attribute name="latitude" optional="YES" attributeType="String"/>
         <attribute name="longitude" optional="YES" attributeType="String"/>
         <attribute name="phone" optional="YES" attributeType="String"/>
-        <relationship name="tagInfo" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TagInfo"/>
     </entity>
 </model>
