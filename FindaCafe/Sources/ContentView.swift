@@ -1,11 +1,35 @@
 import SwiftUI
+import SearchFeature
 
 public struct ContentView: View {
-    public init() {}
-
+    @State private var selectedTab: Tab = .myCafe
+    
     public var body: some View {
-        Text("Hello, World!")
-            .padding()
+        ZStack {
+            VStack {
+                TabView(selection: $selectedTab){
+                    ForEach(Tab.allCases, id: \.rawValue) { tab in
+                        HStack {
+                            if tab == .searchCafe {
+                                SearchFeature.SearchCafeTabView(searchCafeTabViewModel:  AppDI.shared.searchCafeTabDependencies(), searchCafeTableViewModel:  AppDI.shared.searchCafeTableDependencies())
+                            } else {
+                                    VStack {
+                                    Image(systemName: tab.rawValue)
+                                    Text("")
+                                }
+                            }
+                        }
+                        .tag(tab)
+                    }
+                }
+            }
+            
+            VStack {
+                Spacer()
+                CustomTabbar(selectedTab: $selectedTab)
+            }
+        }
+        .ignoresSafeArea()
     }
 }
 
@@ -13,5 +37,6 @@ public struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+            .ignoresSafeArea()
     }
 }
