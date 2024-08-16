@@ -1,4 +1,5 @@
 import SwiftUI
+import HomeFeature
 import SearchFeature
 
 public struct ContentView: View {
@@ -12,6 +13,8 @@ public struct ContentView: View {
                         HStack {
                             if tab == .searchCafe {
                                 SearchFeature.SearchCafeTabView(searchCafeTabViewModel:  AppDI.shared.searchCafeTabDependencies(), searchCafeTableViewModel:  AppDI.shared.searchCafeTableDependencies())
+                            } else if tab == .myCafe {
+                                HomeFeature.CafeListView(loadCafeListUseCase: LoadCafeListUseCaseMock())
                             } else {
                                     VStack {
                                     Image(systemName: tab.rawValue)
