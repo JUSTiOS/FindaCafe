@@ -81,7 +81,7 @@ class KakaoMapCoordinator: NSObject, MapControllerDelegate, ObservableObject {
     func createMyLocationPoiStyle() {
         let view = controller?.getView("mapview") as! KakaoMap
         let manager = view.getLabelManager()
-        let iconStyle = PoiIconStyle(symbol: CommonUIAsset.myLocation.image, anchorPoint: CGPoint(x: 0.5, y: 0.5))
+        let iconStyle = PoiIconStyle(symbol: CommonUIAsset.mapMyLocation.image, anchorPoint: CGPoint(x: 0.5, y: 0.5))
         let text = PoiTextLineStyle(textStyle: TextStyle(fontSize: 25, fontColor: UIColor.systemRed, strokeThickness: 5, strokeColor: .white))
         let textStyle = PoiTextStyle(textLineStyles: [text])
         textStyle.textLayouts = [PoiTextLayout.bottom]
@@ -96,7 +96,7 @@ class KakaoMapCoordinator: NSObject, MapControllerDelegate, ObservableObject {
     func createNearbyCafePoiStyle() {
         let view = controller?.getView("mapview") as! KakaoMap
         let manager = view.getLabelManager()
-        let iconStyle = PoiIconStyle(symbol: CommonUIAsset.mapCafepoi.image, anchorPoint: CGPoint(x: 0.5, y: 0.5))
+        let iconStyle = PoiIconStyle(symbol: CommonUIAsset.mapCafepoi.image, anchorPoint: CGPoint(x: 0.0, y: 0.0))
         let text = PoiTextLineStyle(textStyle: TextStyle(fontSize: 25, fontColor: UIColor.black, strokeThickness: 2, strokeColor: .white))
         let textStyle = PoiTextStyle(textLineStyles: [text])
         textStyle.textLayouts = [PoiTextLayout.bottom]
