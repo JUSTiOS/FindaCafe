@@ -1,11 +1,11 @@
 {
   "images" : [
     {
+      "filename" : "home_emptycafe.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "cafepoi.png",
       "idiom" : "universal",
       "scale" : "2x"
     },

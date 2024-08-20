@@ -16,9 +16,11 @@ let project = Project(
                 ]
             ),
             sources: ["FindaCafe/Sources/**"],
+            resources: ["FindaCafe/Resources/**"],
             dependencies: [
                 .project(target: "HomeFeature", path: .relativeToRoot("Features/HomeFeature")),
                 .project(target: "SearchFeature", path: .relativeToRoot("Features/SearchFeature")),
+                .project(target: "CommonUI", path: .relativeToRoot("Shared")),
             ]
         ),
         .target(
