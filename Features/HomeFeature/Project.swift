@@ -8,7 +8,6 @@ let targets: [Target] = [
         bundleId: "io.justios.HomeFeature",
         deploymentTargets: .iOS("16.0"),
         sources: ["Sources/**"],
-        resources: ["Resources/**"],
         dependencies: [
             .external(name: "Alamofire"),
             .external(name: "KakaoMapsSDK-SPM")

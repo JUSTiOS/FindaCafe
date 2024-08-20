@@ -7,6 +7,7 @@
 
 import SwiftUI
 import KakaoMapsSDK
+import CommonUI
 
 struct MapView: UIViewRepresentable {
     private let size: CGSize
@@ -86,7 +87,7 @@ struct MapView: UIViewRepresentable {
         
         private func createPoiStyle(for view: KakaoMap) {
             let labelManager = view.getLabelManager()
-            let iconStyle = PoiIconStyle(symbol: HomeFeatureAsset.cafepoi.image, anchorPoint: CGPoint(x: 0.5, y: 1))
+            let iconStyle = PoiIconStyle(symbol: CommonUIAsset.mapCafepoi.image, anchorPoint: CGPoint(x: 0.5, y: 1))
             let textStyle = TextStyle(fontSize: 25, fontColor: .black, strokeThickness: 2, strokeColor: .white)
             let poiTextStyle = PoiTextStyle(textLineStyles: [PoiTextLineStyle(textStyle: textStyle)])
             

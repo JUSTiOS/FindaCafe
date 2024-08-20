@@ -7,7 +7,6 @@ let targets: [Target] = [
         product: .staticFramework,
         bundleId: "io.justios.CommonUI",
         deploymentTargets: .iOS("16.0"),
-        sources: ["Sources/**"],
         resources: ["Resources/**"],
         settings: .settings(base: ["OTHER_LDFLAGS": "-ObjC"])
     )

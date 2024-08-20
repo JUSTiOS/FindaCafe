@@ -8,6 +8,7 @@
 import SwiftUI
 import Combine
 import CoreLocation
+import CommonUI
 
 public struct CafeListView: View {
     enum Filter {
@@ -75,8 +76,7 @@ public struct CafeListView: View {
                 }
                 
                 VStack {
-                    // TODO: - Should be replaced to cafe board image
-                    RoundedRectangle(cornerRadius: 15)
+                    CommonUIAsset.homeEmptycafe.swiftUIImage
                         .frame(width: 200, height: 200)
                     
                     Text("등록된 카페가 없습니다.\n나만의 카페를 등록해보세요!")
