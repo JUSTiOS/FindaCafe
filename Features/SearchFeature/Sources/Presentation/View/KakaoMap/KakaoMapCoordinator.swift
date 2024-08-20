@@ -1,5 +1,6 @@
 import SwiftUI
 import KakaoMapsSDK
+import CommonUI
 
 class KakaoMapCoordinator: NSObject, MapControllerDelegate, ObservableObject {
     var myLocation: MyLocationEntity?
@@ -7,10 +8,15 @@ class KakaoMapCoordinator: NSObject, MapControllerDelegate, ObservableObject {
     var selectedCafe: NearbyCafeEntity
     
     override init() {
-        selectedCafe = NearbyCafeEntity(cafeName: "-", phone: "-",
-                                        distance: "-", latitude: "-",
-                                        longitude: "-", categoryName: "-",
-                                        address: "-")
+        selectedCafe = NearbyCafeEntity(
+            cafeName: "-",
+            phone: "-",
+            distance: "-",
+            latitude: "-",
+            longitude: "-",
+            categoryName: "-",
+            address: "-"
+        )
         nearbyCafes = []
         super.init()
     }
@@ -54,12 +60,14 @@ class KakaoMapCoordinator: NSObject, MapControllerDelegate, ObservableObject {
         view.showCompass()
         
         view.setScaleBarPosition(origin: GuiAlignment(vAlign: .bottom, hAlign: .right), position: CGPoint(x: 10.0, y: 40.0))
+        
         view.showScaleBar()
     }
     
     func addViewSucceeded(_ viewName: String, viewInfoName: String) {
         let view = controller?.getView("mapview")
         view?.viewRect = container!.bounds
+        
         viewInit(viewName: viewName)
     }
     
@@ -73,23 +81,22 @@ class KakaoMapCoordinator: NSObject, MapControllerDelegate, ObservableObject {
     func createMyLocationPoiStyle() {
         let view = controller?.getView("mapview") as! KakaoMap
         let manager = view.getLabelManager()
-        let config =  UIImage.SymbolConfiguration(hierarchicalColor: .systemRed)
-        let image = UIImage(systemName: "record.circle.fill", withConfiguration: config)
-        let iconStyle = PoiIconStyle(symbol: image, anchorPoint: CGPoint(x: 0.5, y: 0.5))
+        let iconStyle = PoiIconStyle(symbol: CommonUIAsset.mapMyLocation.image, anchorPoint: CGPoint(x: 0.5, y: 0.5))
         let text = PoiTextLineStyle(textStyle: TextStyle(fontSize: 25, fontColor: UIColor.systemRed, strokeThickness: 5, strokeColor: .white))
         let textStyle = PoiTextStyle(textLineStyles: [text])
         textStyle.textLayouts = [PoiTextLayout.bottom]
+        
         let poiStyle = PoiStyle(styleID: "myLocationPoiStyle", styles: [
             PerLevelPoiStyle(iconStyle: iconStyle, textStyle: textStyle, level: 0)
         ])
+        
         manager.addPoiStyle(poiStyle)
     }
     
     func createNearbyCafePoiStyle() {
         let view = controller?.getView("mapview") as! KakaoMap
         let manager = view.getLabelManager()
-        let image = UIImage(named: "cafepoi")
-        let iconStyle = PoiIconStyle(symbol: image, anchorPoint: CGPoint(x: 0.5, y: 0.5))
+        let iconStyle = PoiIconStyle(symbol: CommonUIAsset.mapCafepoi.image, anchorPoint: CGPoint(x: 0.0, y: 0.0))
         let text = PoiTextLineStyle(textStyle: TextStyle(fontSize: 25, fontColor: UIColor.black, strokeThickness: 2, strokeColor: .white))
         let textStyle = PoiTextStyle(textLineStyles: [text])
         textStyle.textLayouts = [PoiTextLayout.bottom]
@@ -120,10 +127,10 @@ class KakaoMapCoordinator: NSObject, MapControllerDelegate, ObservableObject {
     func createNearbyCafePois(nearbyCafe: NearbyCafeEntity) {
         let view = controller?.getView("mapview") as! KakaoMap
         let manager = view.getLabelManager()
-        let layer = manager.getLabelLayer(layerID: "PoiLayer")   // 생성한 POI를 추가할 레이어를 가져온다.
-        let poiOption = PoiOptions(styleID: "nearbyCafePoiStyle") // 생성할 POI의 Option을 지정하기 위한 자료를 담는 클래스를 생성. 사용할 스타일의 ID를 지정한다.
+        let layer = manager.getLabelLayer(layerID: "PoiLayer")
+        let poiOption = PoiOptions(styleID: "nearbyCafePoiStyle")
         poiOption.rank = 0
-        poiOption.clickable = true // clickable 옵션을 true로 설정한다. default는 false로 설정되어있다.
+        poiOption.clickable = true
         poiOption.addText(PoiText(text: nearbyCafe.cafeName, styleIndex: 0))
         
         let longitude = Double(nearbyCafe.longitude) ?? 0.0
