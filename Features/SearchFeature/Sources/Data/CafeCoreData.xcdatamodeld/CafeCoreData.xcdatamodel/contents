@@ -3,6 +3,7 @@
     <entity name="CafeInfo" representedClassName="CafeInfo" syncable="YES" codeGenerationType="class">
         <attribute name="congestion" optional="YES" attributeType="String"/>
         <attribute name="etc" optional="YES" attributeType="String"/>
+        <attribute name="favorite" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="powerSocket" optional="YES" attributeType="String"/>
         <attribute name="storeSize" optional="YES" attributeType="String"/>
         <attribute name="toilet" optional="YES" attributeType="String"/>

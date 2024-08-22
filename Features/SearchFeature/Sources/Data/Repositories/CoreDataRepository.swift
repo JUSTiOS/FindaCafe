@@ -1,10 +1,12 @@
-class CoreDataRepository: CoreDataInterface {
+public final class CoreDataRepository: CoreDataInterface {
     let coreDataService: CoreDataService
     
     init(coreDataService: CoreDataService) {
         self.coreDataService = coreDataService
     }
-    
+}
+
+extension CoreDataRepository {
     func addCafeInfo(
         vibe: String,
         toilet: String,

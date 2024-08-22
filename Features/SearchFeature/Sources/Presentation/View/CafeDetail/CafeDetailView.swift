@@ -24,6 +24,9 @@ struct CafeDetailView: View {
                 }
             }
         }
+        .onTapGesture {
+            self.endTextEditing()
+        }
     }
 }
 
@@ -104,11 +107,11 @@ struct CafeDetailTag: View {
         }
         .padding([.top, .bottom])
         
-        TagSection(sectionTitle: "분위기", sectionItems: ["조용함", "적당함", "활기참", "소란스러움"])
-        TagSection(sectionTitle: "매장 크기", sectionItems: ["작음", "적당함", "넓음"])
-        TagSection(sectionTitle: "혼잡도", sectionItems: ["원활", "보통", "혼잡"])
-        TagSection(sectionTitle: "콘센트 유무", sectionItems: ["없음", "적음", "적당함", "많음"])
-        TagSection(sectionTitle: "화장실 유무", sectionItems: ["없음", "있음"])
+        TagSection(viewModel: TagSectionViewModel(sectionTitle: "분위기", sectionItems: ["조용함", "적당함", "활기참", "소란스러움"]))
+        TagSection(viewModel: TagSectionViewModel(sectionTitle: "매장 크기", sectionItems: ["작음", "적당함", "넓음"]))
+        TagSection(viewModel: TagSectionViewModel(sectionTitle: "혼잡도", sectionItems: ["원활", "보통", "혼잡"]))
+        TagSection(viewModel: TagSectionViewModel(sectionTitle: "콘센트 유무", sectionItems: ["있음", "없음"]))
+        TagSection(viewModel: TagSectionViewModel(sectionTitle: "화장실 유무", sectionItems: ["없음", "있음"]))
         
         HStack {
             TextField("태그를 입력하세요.", text: $customTag){

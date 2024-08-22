@@ -13,6 +13,8 @@ let project = Project(
                 with: [
                     "NSLocationWhenInUseUsageDescription": "This app can track your location for find near cafe",
                     "UILaunchStoryboardName": "LaunchScreen.storyboard",
+                    "AUTH_API_KEY": "1645dc5045b482bff605f025a2a44855",
+                    "REST_API_KEY": "c737c77f5519ab994c407dd0b394655f"
                 ]
             ),
             sources: ["FindaCafe/Sources/**"],
