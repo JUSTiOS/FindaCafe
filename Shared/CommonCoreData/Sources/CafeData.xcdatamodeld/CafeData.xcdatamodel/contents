@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22758" systemVersion="23F79" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
+    <entity name="CafeEntity" representedClassName="CafeEntity" syncable="YES">
+        <attribute name="addedDate" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="address" attributeType="String"/>
+        <attribute name="cafeName" attributeType="String"/>
+        <attribute name="categoryName" attributeType="String"/>
+        <attribute name="distance" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="id" attributeType="String"/>
+        <attribute name="latitude" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="liked" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="longitude" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="phone" attributeType="String"/>
+        <attribute name="placeURL" attributeType="URI"/>
+        <relationship name="tags" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TagEntity" inverseName="cafes" inverseEntity="TagEntity"/>
+    </entity>
+    <entity name="ImageEntity" representedClassName="ImageEntity" syncable="YES">
+        <attribute name="id" attributeType="String"/>
+        <attribute name="imageData" attributeType="Binary"/>
+    </entity>
+    <entity name="TagEntity" representedClassName="TagEntity" syncable="YES">
+        <attribute name="category" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="name" attributeType="String"/>
+        <relationship name="cafes" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CafeEntity" inverseName="tags" inverseEntity="CafeEntity"/>
+    </entity>
+</model>

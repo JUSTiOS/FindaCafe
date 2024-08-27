@@ -13,8 +13,6 @@ let project = Project(
                 with: [
                     "NSLocationWhenInUseUsageDescription": "This app can track your location for find near cafe",
                     "UILaunchStoryboardName": "LaunchScreen.storyboard",
-                    "AUTH_API_KEY": "1645dc5045b482bff605f025a2a44855",
-                    "REST_API_KEY": "c737c77f5519ab994c407dd0b394655f"
                 ]
             ),
             sources: ["FindaCafe/Sources/**"],
@@ -23,6 +21,7 @@ let project = Project(
                 .project(target: "HomeFeature", path: .relativeToRoot("Features/HomeFeature")),
                 .project(target: "SearchFeature", path: .relativeToRoot("Features/SearchFeature")),
                 .project(target: "CommonUI", path: .relativeToRoot("Shared/CommonUI")),
+                .project(target: "CommonCoreData", path: .relativeToRoot("Shared/CommonCoreData")),
             ]
         ),
         .target(
