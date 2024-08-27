@@ -21,6 +21,7 @@ let project = Project(
                 .project(target: "HomeFeature", path: .relativeToRoot("Features/HomeFeature")),
                 .project(target: "SearchFeature", path: .relativeToRoot("Features/SearchFeature")),
                 .project(target: "CommonUI", path: .relativeToRoot("Shared/CommonUI")),
+                .project(target: "CommonCoreData", path: .relativeToRoot("Shared/CommonCoreData")),
             ]
         ),
         .target(

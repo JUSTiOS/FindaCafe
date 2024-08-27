@@ -1,17 +1,16 @@
 import SwiftUI
 
 struct TagSection: View {
-    var sectionTitle: String = ""
-    var sectionItems: [String] = []
+    @StateObject var viewModel: TagSectionViewModel
     
     var body: some View {
         VStack(alignment: .leading) {
-            Text(sectionTitle)
+            Text(viewModel.sectionTitle)
                 .foregroundStyle(.gray)
                 .font(.system(size: 14))
             HStack {
-                ForEach(sectionItems, id: \.self){ item in
-                    Tag(sectionTitle: sectionTitle, tagTitle: item)
+                ForEach(viewModel.sectionItems, id: \.self) { item in
+                    Tag(viewModel: viewModel, tagTitle: item)
                 }
             }
         }
@@ -20,9 +19,8 @@ struct TagSection: View {
 }
 
 struct Tag: View {
-    @State var selected: Bool = false
+    @StateObject var viewModel: TagSectionViewModel
     
-    var sectionTitle: String = ""
     var tagTitle: String = ""
     
     var body: some View {
@@ -30,21 +28,16 @@ struct Tag: View {
             .font(.system(size: 14))
             .padding([.leading, .trailing], 15)
             .padding([.top, .bottom], 4)
-            .background(selected ? Color(.lightGray) : .white)
+            .background(viewModel.sectionSelectedState[(viewModel.sectionItems.firstIndex(of: tagTitle))!] ? Color(.lightGray) : .white)
             .cornerRadius(15)
             .foregroundStyle(.black)
             .overlay(
                 RoundedRectangle(cornerRadius: 15)
-                .stroke(lineWidth: 2)
+                    .stroke(lineWidth: 2)
             )
             .padding(2)
             .onTapGesture {
-                selected.toggle()
-                if selected {
-                    print("key: \(sectionTitle), tag: \(tagTitle)")
-                } else {
-                    print("key: \(sectionTitle), tag: \(tagTitle)")
-                }
+                viewModel.tagSelected(tagTitle: tagTitle)
             }
     }
 }

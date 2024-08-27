@@ -16,6 +16,7 @@ struct MapView: UIViewRepresentable {
     init(size: CGSize, cafe: Cafe) {
         self.size = size
         self.cafe = cafe
+        
         // TODO: - Info.plist에서 안전하게 불러오는 코드 추가 작성 필요
         SDKInitializer.InitSDK(appKey: Bundle.main.infoDictionary?["AUTH_API_KEY"] as! String)
     }

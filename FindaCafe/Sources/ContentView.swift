@@ -11,12 +11,13 @@ public struct ContentView: View {
                 TabView(selection: $selectedTab){
                     ForEach(Tab.allCases, id: \.rawValue) { tab in
                         HStack {
-                            if tab == .searchCafe {
-                                SearchFeature.SearchCafeTabView(searchCafeTabViewModel:  AppDI.shared.searchCafeTabDependencies(), searchCafeTableViewModel:  AppDI.shared.searchCafeTableDependencies())
-                            } else if tab == .myCafe {
+                            switch tab {
+                            case .myCafe:
                                 HomeFeature.CafeListView(loadCafeListUseCase: LoadCafeListUseCaseMock())
-                            } else {
-                                    VStack {
+                            case .searchCafe:
+                                SearchFeature.SearchCafeTabView(searchCafeTabViewModel:  AppDI.shared.searchCafeTabDependencies(), searchCafeTableViewModel:  AppDI.shared.searchCafeTableDependencies())
+                            case .info:
+                                VStack {
                                     Image(systemName: tab.rawValue)
                                     Text("")
                                 }

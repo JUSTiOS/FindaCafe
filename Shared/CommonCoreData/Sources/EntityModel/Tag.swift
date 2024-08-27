@@ -1,0 +1,20 @@
+import Foundation
+
+public struct Tag: Hashable {
+    @objc enum Category: Int16 {
+        case custom
+        case mood
+        case cafeSize
+        case congestion
+        case powerOutlet
+        case toilet
+    }
+    
+    let name: String
+    let category: Category
+    
+    init(name: String, category: Category) {
+        self.name = name
+        self.category = category
+    }
+}

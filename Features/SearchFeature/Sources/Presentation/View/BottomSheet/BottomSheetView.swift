@@ -18,7 +18,7 @@ struct BottomSheetView: View {
                     bookMarkSelected.toggle()
                 } label: {
                     Image(systemName: bookMarkSelected ? "star.fill" : "star")
-                        .tint(.black)
+                        .tint(bookMarkSelected ? .yellow : .black)
                         .font(.system(size: 20))
                 }
             }
