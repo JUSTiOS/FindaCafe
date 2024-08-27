@@ -12,10 +12,7 @@ let targets: [Target] = [
             .external(name: "Alamofire"),
             .external(name: "KakaoMapsSDK-SPM")
         ],
-        settings: .settings(base: ["OTHER_LDFLAGS": "-ObjC"]),
-        coreDataModels: [
-            .coreDataModel("Sources/Data/CafeCoreData.xcdatamodeld")
-        ]
+        settings: .settings(base: ["OTHER_LDFLAGS": "-ObjC"])
     )
 ]
 

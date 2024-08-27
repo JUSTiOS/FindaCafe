@@ -15,7 +15,7 @@ struct MapView: UIViewRepresentable {
     init(size: CGSize, cafe: Cafe) {
         self.size = size
         self.cafe = cafe
-        SDKInitializer.InitSDK(appKey: "494ee3607df71d466a244c17cb4bd279")
+        SDKInitializer.InitSDK(appKey: "0f5328e1124b6d10db86da349f95ac18")
     }
     
     func makeUIView(context: Self.Context) -> KMViewContainer {

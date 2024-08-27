@@ -1,10 +1,10 @@
 import CommonCoreData
 
-private protocol CafeFetchUseCaseProtocol {
+protocol CafeFetchUseCaseProtocol {
     func execute(cafe: Cafe) async throws -> [Cafe]
 }
 
-final class CafeFetchUseCase: FetchCafeUseCaseProtocol {
+final class CafeFetchUseCase: CafeFetchUseCaseProtocol {
     private let repository: CoreDataInterface
     
     init(repository: CoreDataInterface) {

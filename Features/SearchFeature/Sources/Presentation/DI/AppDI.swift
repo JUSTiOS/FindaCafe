@@ -1,3 +1,5 @@
+import CommonCoreData
+
 public class AppDI: AppDIInterface {
     public static let shared = AppDI()
     
