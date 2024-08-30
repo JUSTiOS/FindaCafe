@@ -1,6 +1,7 @@
 import SwiftUI
 import HomeFeature
 import SearchFeature
+import InfoFeature
 
 public struct ContentView: View {
     @State private var selectedTab: Tab = .myCafe
@@ -17,10 +18,7 @@ public struct ContentView: View {
                             case .searchCafe:
                                 SearchFeature.SearchCafeTabView(searchCafeTabViewModel:  AppDI.shared.searchCafeTabDependencies(), searchCafeTableViewModel:  AppDI.shared.searchCafeTableDependencies())
                             case .info:
-                                VStack {
-                                    Image(systemName: tab.rawValue)
-                                    Text("")
-                                }
+                                InfoFeature.InfoTabView()
                             }
                         }
                         .tag(tab)
